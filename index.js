@@ -28,7 +28,7 @@ client.on('message', async msg => {
     if (body === '!menu') {
         const media = MessageMedia.fromFilePath('./menu.jpg');
         client.sendMessage(msg.from, media, {
-            caption: '*👑 THE LEGENDARY N1L BOT MENU*
+            caption: '* THE LEGENDARY N1L BOT MENU*
 
 Commands:
 !ping
