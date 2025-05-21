@@ -1,0 +1,15 @@
+{
+  "name": "the-legendary-n1l",
+  "version": "1.0.0",
+  "description": "THE LEGENDARY N1L WhatsApp bot powered by whatsapp-web.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "THE LEGENDARY N1L",
+  "license": "MIT",
+  "dependencies": {
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.22.1"
+  }
+}
