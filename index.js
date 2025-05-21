@@ -7,7 +7,7 @@ const client = new Client({
     puppeteer: { headless: true }
 });
 
-const OWNER_NUMBERS = ['1234567890@c.us']; // Replace this with your real WhatsApp ID
+const OWNER_NUMBERS = ['1234567890@c.us']; // Replace with your real WhatsApp ID
 
 client.on('qr', qr => {
     qrcode.generate(qr, { small: true });
@@ -28,18 +28,15 @@ client.on('message', async msg => {
     if (body === '!menu') {
         const media = MessageMedia.fromFilePath('./menu.jpg');
         client.sendMessage(msg.from, media, {
-            caption: '* THE LEGENDARY N1L BOT MENU*
-
-Commands:
-!ping
-!menu
-!ytmp3
-!sticker
-
-NSFW (Owner only):
-!porn
-
-𝗙𝗞 𝗜𝟱𝗥𝟰𝗟 𝗕𝗬 𝗡𝟭𝗟'
+            caption: "* THE LEGENDARY N1L BOT *\n\n" +
+                     "Commands:\n" +
+                     "!ping\n" +
+                     "!menu\n" +
+                     "!ytmp3\n" +
+                     "!sticker\n\n" +
+                     "NSFW (Owner only):\n" +
+                     "!porn\n\n" +
+                     "𝗙𝗞 𝗜𝟱𝗥𝟰𝗟 𝗕𝗬 𝗡𝟭𝗟"
         });
     }
 
@@ -49,7 +46,7 @@ NSFW (Owner only):
 
     if (body === '!sticker' && msg.hasMedia) {
         const media = await msg.downloadMedia();
-        msg.reply(media, undefined, { sendMediaAsSticker: true });
+        client.sendMessage(msg.from, media, { sendMediaAsSticker: true });
     }
 
     if (body === '!porn' && isOwner) {
