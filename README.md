@@ -2,7 +2,7 @@
 
 ## 🟩 WHATSAPP SESSION SETUP (Multi QR Panels)
 
-✨ Use any of the live QR panels below to generate session:
+✨ Use any of the live QR panels below to generate your WhatsApp session:
 
 <p align="center">
 
@@ -40,10 +40,7 @@
 
 </p>
 
-🧠 If any QR fails to load, just try the next one — all connect to WhatsApp Multi-Device!
-
----
-
+📝 _Scan using WhatsApp → Linked Devices → Scan QR. If one doesn’t load, try another._
 
 ---
 
@@ -56,32 +53,6 @@
 | ☁️ Koyeb | [Deploy Now](https://jarvis-qr.vercel.app/koyeb) |
 | 🔵 Render | [Deploy Now](https://jarvis-qr.vercel.app/render) |
 | 💻 Replit | [Deploy Now](https://jarvis-qr.vercel.app/replit) |
-
----
-
-## 🟩 WHATSAPP SESSION SETUP (Scan QR Code)
-
-✨ Use any panel below to generate your WhatsApp session QR:
-
-<p align="center">
-  <a href="https://jarvis-qr.vercel.app">
-    <img src="https://img.shields.io/badge/QR%20Panel%201-Primary-00c853?style=for-the-badge&logo=whatsapp&logoColor=white" />
-  </a>
-  <a href="https://md-session-qr.vercel.app">
-    <img src="https://img.shields.io/badge/QR%20Panel%202-Backup-00b894?style=for-the-badge&logo=whatsapp&logoColor=white" />
-  </a>
-  <a href="https://scan-qr-md.onrender.com">
-    <img src="https://img.shields.io/badge/QR%20Panel%203-Extra-00cec9?style=for-the-badge&logo=whatsapp&logoColor=white" />
-  </a>
-  <a href="https://whatsapp-session-md.vercel.app">
-    <img src="https://img.shields.io/badge/QR%20Panel%204-Baileys%20Scan-0984e3?style=for-the-badge&logo=whatsapp&logoColor=white" />
-  </a>
-  <a href="https://qrconnect-md.vercel.app">
-    <img src="https://img.shields.io/badge/QR%20Panel%205-MultiDevice-6c5ce7?style=for-the-badge&logo=whatsapp&logoColor=white" />
-  </a>
-</p>
-
-📝 _Scan from WhatsApp on your phone → Linked Devices → Scan QR. If one doesn’t work, try the next._
 
 ---
 
