@@ -2,12 +2,10 @@
   <img src="https://i.postimg.cc/RFddD6vj/93f52fb3-70a2-4d6b-b487-c3f3519b679b.jpg" width="100%" alt="LEGENDARY BOT BANNER"/>
 </p>
 
-<h1 align="center">
-  ✨ 𝚻𝚮𝚵 𝐋𝚵𝐆𝚴𝚴𝐃𝚫𝚪𝐘 𝚴𝚰𝐋 𝚩𝚯𝚻 ✨
-</h1>
+<h1 align="center">✨ 𝚻𝚮𝚵 𝐋𝚵𝐆𝚴𝚴𝐃𝚫𝚪𝐘 𝚴𝚰𝐋 𝚩𝚯𝚻 ✨</h1>
 
 <p align="center">
-  <img src="assets/owner-pic.png" width="140" style="border-radius: 50%;" alt="Owner Picture"/>
+  <img src="https://i.postimg.cc/020SdR2B/a3a97dd1-10bc-4f0c-86e8-543c684a7419.jpg" width="140" style="border-radius: 50%;" alt="Owner Picture"/>
 </p>
 
 <p align="center">
