@@ -9,7 +9,7 @@
   <a href="https://jarvis-qr.vercel.app" target="_blank">
     <img src="https://img.shields.io/badge/QR%20Panel%201-Primary-00c853?style=for-the-badge&logo=whatsapp&logoColor=white" />
   </a>
-  <h1 align="center">✨ 𝚻𝚮𝚵 𝐋𝚵𝐆𝚴𝚴𝐃𝚫𝚪𝐘 𝚴𝚰𝐋 𝚩𝚯𝚻 ✨</h1>
+
   <a href="https://scan-md-x.vercel.app" target="_blank">
     <img src="https://img.shields.io/badge/QR%20Panel%202-Live%20Scanner-43a047?style=for-the-badge&logo=whatsapp&logoColor=white" />
   </a>
