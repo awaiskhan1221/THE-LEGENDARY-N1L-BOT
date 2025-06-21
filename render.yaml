@@ -1,23 +1,40 @@
 services:
   - type: web
-    name: jarvis
-    repo: https://github.com/Loki-Xer/jarvis.git
+    name: 𝚴𝚯𝚻-𝐔𝚪-𝚴𝚰𝐋
+    repo: https://github.com/awaiskhan1221/legendary-md
     branch: main
     env: docker
     dockerfilePath: Dockerfile
     plan: free
     autoDeploy: true
+    buildCommand: ""
+    startCommand: ""
     envVars:
-      - key: RENDER_APP_NAME
-        sync: false
-        required: true
-      - key: RENDER_API
-        sync: false
-        required: true
       - key: SESSION_ID
-        sync: false
         required: true
+        sync: false
+      - key: RENDER_APP_NAME
+        required: true
+        sync: false
+      - key: RENDER_API
+        required: true
+        sync: false
       - key: DATABASE_URL
-        sync: false
         required: true
-        
+        sync: false
+      - key: BOT_INFO
+        required: false
+        sync: false
+        value: "𝚴𝚯𝚻 BOT;𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋;https://i.postimg.cc/RFddD6vj/93f52fb3-70a2-4d6b-b487-c3f3519b679b.jpg"
+      - key: WORK_TYPE
+        required: false
+        sync: false
+        value: "private"
+      - key: STICKER_PACKNAME
+        required: false
+        sync: false
+        value: "𝚴𝚯𝚻;𝚴𝚰𝐋"
+      - key: OWNER_NUMBER
+        required: false
+        sync: false
+        value: "923474810818"
