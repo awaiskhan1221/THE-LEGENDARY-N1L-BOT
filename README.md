@@ -2,7 +2,7 @@
 
 ## 🟩 WHATSAPP SESSION SETUP (Multi QR Panels)
 
-✨ Use any of the live QR panels below to generate your WhatsApp session:
+
 
 <p align="center">
 
