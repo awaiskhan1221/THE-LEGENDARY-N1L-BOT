@@ -1,13 +1,4 @@
-/*------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-Copyright (C) 2023 Loki - Xer.
-Licensed under the  GPL-3.0 License;
-you may not use this file except in compliance with the License.
-Jarvis - Loki-Xer 
-
-
-------------------------------------------------------------------------------------------------------------------------------------------------------*/
+// 💘 Legendary Menu Panel — Designed by 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋
 
 const plugins = require("../lib/system");
 const { System, isPrivate, isUrl, config } = require("../lib");
@@ -16,93 +7,77 @@ const { uptime } = require("os");
 const { version } = require('../package.json');
 const fancy = require('./client/fancy');
 
+const clockString = (ms) => {
+  const h = Math.floor(ms / 3600000).toString().padStart(2, '0');
+  const m = Math.floor((ms % 3600000) / 60000).toString().padStart(2, '0');
+  const s = Math.floor((ms % 60000) / 1000).toString().padStart(2, '0');
+  return `${h}:${m}:${s}`;
+};
+
 async function readMore() {
-  const readmore = String.fromCharCode(8206).repeat(4001);
-  return readmore;
-};
-
-const clockString = (duration) => {
-    let seconds = Math.floor((duration / 1000) % 60),
-        minutes = Math.floor((duration / (1000 * 60)) % 60),
-        hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
-    
-    hours = hours < 10 ? "0" + hours : hours;
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-    seconds = seconds < 10 ? "0" + seconds : seconds;
-    
-    return hours + ":" + minutes + ":" + seconds;
-};
+  return String.fromCharCode(8206).repeat(4001);
+}
 
 System({
-    pattern: 'menu ?(.*)',
-    fromMe: isPrivate,
-    desc: 'Shows the menu of bot',
-    type: 'info',
-    dontAddCommandList: true,
+  pattern: 'menu ?(.*)',
+  fromMe: isPrivate,
+  desc: 'Flirty command menu',
+  type: 'romantic',
+  dontAddCommandList: true,
 }, async (message, match) => {
-    let [date, time] = new Date().toLocaleString("en-IN", { timeZone: config.TIMEZONE }).split(",");
-    let menu = `╭━━━〔 ${BOT_INFO.split(';')[0]} ⁩〕━━━···▸\n┃╭──────────────···▸\n✧│ *ᴏᴡɴᴇʀ :*  ${BOT_INFO.split(';')[1]}\n✧│ *ᴜsᴇʀ :* ${message.pushName.replace(/[\r\n]+/gm, "")}\n✧│ *ᴘʟᴜɢɪɴs :* ${plugins.commands.length}\n✧│ *ᴅᴀᴛᴇ :* ${date}\n✧│ *ᴛɪᴍᴇ :* ${time}\n✧│ *ᴜᴘᴛɪᴍᴇ :* ${clockString(uptime())}\n✧│ *ᴠᴇʀsɪᴏɴ :* ᴠ${version}\n┃╰──────────────···▸\n╰━━━━━━━━━━━━━━━···▸\n\n\n${await readMore()}\n╭━━━━━━━━━━━━━━━···▸\n╽`;
-    let cmnd = [], category = [];
-    for (const command of plugins.commands) {
-        const cmd = command.pattern?.toString().match(/(\W*)([A-Za-züşiğ öç1234567890]*)/)?.[2];
-        if (!command.dontAddCommandList && cmd) {
-            const type = (command.type || "misc").toUpperCase();
-            cmnd.push({ cmd, type });
-            if (!category.includes(type)) category.push(type);
-        }
-    }
+  const [date, time] = new Date().toLocaleString("en-IN", { timeZone: config.TIMEZONE }).split(",");
+  const ownerName = BOT_INFO.split(';')[1];
+  const botName = BOT_INFO.split(';')[0];
+  const image = BOT_INFO.split(';')[2];
 
-    const [typFont, ptrnFont] = MENU_FONT.split(';').map(font => isNaN(font) || parseInt(font) > 35 ? null : font);
-    cmnd.sort();
-    for (const cmmd of category.sort()) {
-        let typ;
-        if (typFont && typFont !== '0') {
-            typ = await fancy.apply(fancy[parseInt(typFont)-1], cmmd);
-        } else {
-            typ = cmmd.toUpperCase();
-        }
-        
-        menu += `\n┃  ╭─────────────┅┄▻\n┃  │  *➻ ${typ}*\n┃  ╰┬────────────┅┄▻\n┃  ┌┤`;
-        for (const { cmd, type } of cmnd.filter(({ type }) => type === cmmd)) {
-            let ptrn;
-            if (ptrnFont && ptrnFont !== '0') {
-                ptrn = await fancy.apply(fancy[parseInt(ptrnFont)-1], cmd.trim().toUpperCase());
-            } else {
-                ptrn = cmd.charAt(0).toUpperCase() + cmd.slice(1).toLowerCase();
-            }
-            menu += `\n┃  │ ‣ ${ptrn}`;
-        }
-        menu += `\n┃  ╰─────────────···▸`;
-    }
-    menu += ` ╰━━━━━━━━━━━┈⊷\nmade with 🤍`;
-    let url = BOT_INFO.split(';')[2];
-    let options = url.includes('&gif') ? { gifPlayback: true, caption: menu } : { caption: menu };  
-    url = url.replace(/&gif/g, '');
-    if (isUrl(url)) await message.sendFromUrl(url, options);
-    else await message.send(menu);
-});
+  let menu = `╭─╮ ♡╭──⌛ *𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 MENU* ⌛──╮♡╭─╮
+│
+│ 🧸 *Owner:* ${ownerName}
+│ ✨ *Bot:* ${botName}
+│ ❤️ *User:* ${message.pushName.replace(/[\r\n]+/gm, "")}
+│ 🌀 *Date:* ${date}
+│ 🕒 *Time:* ${time}
+│ 🔋 *Uptime:* ${clockString(uptime() * 1000)}
+│ 💌 *Version:* v${version}
+│
+│ 💋 *I’m here, waiting...*
+│     whisper a command... I dare you.
+│
+╰───⧪ *CMD ZONE* ⧪───╯`;
 
-System({
-    pattern: "list",
-    fromMe: isPrivate,
-    desc: "Show All commands",
-    type: "info"
-}, async (message, match) => {
-    if (match === "cmd") return;
-    let menu = "\nمصنوع من🤍\n\n";
-    let cmnd = plugins.commands.filter(command => !command.dontAddCommandList && command.pattern);
-    cmnd = cmnd.map(command => ({
-        cmd: command.pattern.toString().match(/(\W*)([A-Za-züşiğ öç1234567890]*)/)[2],
-        desc: command.desc || false
-    }));
-    cmnd.sort((a, b) => a.cmd.localeCompare(b.cmd));
-    cmnd.forEach(({ cmd, desc }, num) => {
-        menu += `*${(num + 1)}. ${cmd.trim()}*\n${desc ? `*use: ${desc}*\n\n\n` : '\n\n'}`;
-    });
-    if (MEDIA_DATA) {
-        const [title, body, thumbnail] = MEDIA_DATA.split(";");
-        await message.client.sendMessage(message.jid, { text: menu, contextInfo: { externalAdReply: { title, body, thumbnailUrl: thumbnail, renderLargerThumbnail: true, mediaType: 1, mediaUrl: '', sourceUrl: "https://github.com/Loki-Xer/Jarvis-md", showAdAttribution: true } } });
-    } else {
-        await message.send(menu);
+  const cmnd = [];
+  const category = [];
+
+  for (const command of plugins.commands) {
+    const cmd = command.pattern?.toString().match(/(\W*)([A-Za-züşiğ öç1234567890]*)/)?.[2];
+    if (!command.dontAddCommandList && cmd) {
+      const type = (command.type || "misc").toUpperCase();
+      cmnd.push({ cmd, type });
+      if (!category.includes(type)) category.push(type);
     }
+  }
+
+  const [typFont, ptrnFont] = MENU_FONT.split(';').map(f => isNaN(f) || parseInt(f) > 35 ? null : f);
+  cmnd.sort();
+
+  for (const cmmd of category.sort()) {
+    let typ = typFont ? await fancy.apply(fancy[parseInt(typFont) - 1], cmmd) : cmmd;
+    menu += `\n\n💎 *${typ}*\n`;
+
+    for (const { cmd, type } of cmnd.filter(({ type }) => type === cmmd)) {
+      let ptrn = ptrnFont ? await fancy.apply(fancy[parseInt(ptrnFont) - 1], cmd.trim()) : cmd;
+      menu += `➥ ${ptrn}\n`;
+    }
+  }
+
+  menu += `\n💘 *Made with love by 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋* 💘`;
+
+  let options = image.includes('&gif')
+    ? { gifPlayback: true, caption: menu }
+    : { caption: menu };
+
+  const url = image.replace(/&gif/g, '');
+
+  if (isUrl(url)) return await message.sendFromUrl(url, options);
+  return await message.send(menu);
 });
