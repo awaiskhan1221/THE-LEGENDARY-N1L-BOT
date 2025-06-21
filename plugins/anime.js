@@ -1,69 +1,56 @@
-/*------------------------------------------------------------------------------------------------------------------------------------------------------
+const { System, getJson, getBuffer, isOwner } = require("../lib/");
 
+const NSFW_RESPONSES = {
+  anal: "🍑 *A little backdoor treat for you, Owner...* 🔥",
+  blowjob: "👄 *Mouth magic time, Owner...* 😈",
+  hentai: "🔞 *Hentai heaven, just for you...* 💋",
+  cum: "💦 *Here’s your creamy fantasy, Owner...* 🔥",
+  ecchi: "👙 *Soft, naughty and seductive...* 🥵",
+  gifsex: "🎞️ *Animated pleasure for your wild side...* 😍",
+  lewdpic: "📸 *Lewd alert, you naughty legend...* 🤤",
+  sexvid: "🎬 *HD action for the night, exclusively yours...* 💣",
+  xvid: "🔞 *X-clusive content unlocked, enjoy Owner...* 💌",
+  moan: "🎧 *Listen close... they moan your name...* 🔊💦"
+};
 
-Copyright (C) 2023 Loki - Xer.
-Licensed under the  GPL-3.0 License;
-you may not use this file except in compliance with the License.
-Jarvis - Loki-Xer 
+const NSFW_LINKS = {
+  anal: "https://nekos.life/api/v2/img/anal",
+  blowjob: "https://nekos.life/api/v2/img/blowjob",
+  hentai: "https://nekos.life/api/v2/img/hentai",
+  cum: "https://nekos.life/api/v2/img/cum",
+  ecchi: "https://nekos.life/api/v2/img/lewd",
+  gifsex: "https://nekos.life/api/v2/img/random_hentai_gif",
+  lewdpic: "https://nekos.life/api/v2/img/lewd",
+  sexvid: "https://raw.githubusercontent.com/NekoLoveBot/Database/master/nsfw/sex.json",
+  xvid: "https://raw.githubusercontent.com/NekoLoveBot/Database/master/nsfw/xvideo.json",
+  moan: "https://raw.githubusercontent.com/NekoLoveBot/Database/master/nsfw/moan.json"
+};
 
+for (const cmd in NSFW_LINKS) {
+  System({
+    pattern: cmd,
+    fromMe: true,
+    desc: `NSFW: ${cmd} command`,
+    type: "18+"
+  }, async (message) => {
+    if (!isOwner(message)) return message.send("*Only the bot owner can use this command.* 🚫");
 
-------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    const urlData = await getJson(NSFW_LINKS[cmd]);
+    let mediaUrl = urlData?.url || (Array.isArray(urlData) ? urlData[Math.floor(Math.random() * urlData.length)] : null);
 
+    if (!mediaUrl) return message.send("_Failed to fetch media. Try again later._");
 
-const { System, IronMan, isPrivate, getJson, getBuffer } = require("../lib/");
+    const fileType = mediaUrl.endsWith(".gif") || mediaUrl.includes("gif") ? "gif" :
+                     mediaUrl.endsWith(".mp4") ? "video" : "image";
 
-System({ 
-    pattern: "waifu", 
-    fromMe: isPrivate, 
-    desc: "Send a waifu image", 
-    type: "anime" 
-}, async (message) => {
-    const response = await getJson(await IronMan("ironman/waifu"));
-    if (!response.status) return await message.send("_*Failed to fetch image*_");
-    await message.send(response.ironman.url, { caption: "*here is your waifu*", quoted: message.data }, "image");
-});
+    const sexyReply = `*💦 𝙾𝚠𝚗𝚎𝚛 𝚂𝙴𝚇 𝙼𝙾𝙳𝙴 𝙾𝙽 🔞*\n${NSFW_RESPONSES[cmd]}`;
 
-System({ 
-    pattern: "neko", 
-    fromMe: isPrivate, 
-    desc: "Send Neko images", 
-    type: "anime" 
-}, async (message) => {
-    const response = await getJson(await IronMan("ironman/neko"));
-    if (!response.status) return await message.send("Failed to fetch image");
-    await message.send(response.ironman.url, { caption: "*here is your neko*", quoted: message.data }, "image");
-});
-
-System({
-    pattern: 'fanime (.*)',
-    fromMe: isPrivate,
-    desc: 'find anime details',
-    type: 'anime',
-}, async (message, match) => {
-    if (!match) return await message.send("*Need an anime name*\n_Example: .anime Future Diary_");    
-    const res = await fetch(IronMan(`ironman/s/anime?anime=${encodeURI(match)}`));
-    if (!res.ok) return await message.send("*Not Found*\nCheck if the anime name is correct");
-    const data = await res.json();
-    const { 
-        Romaji, Japanese, Summary, Released, Ended, Popularity, 
-        Rating, 'Age Rating': AgeRating, Subtype, Status, 
-        Poster, Episodes, 'Episode Length': EpisodeLength, 
-        'Total Length': TotalLength, 'Show Type': ShowType, 
-        NSFW, Low_Cover: Cover, YouTube 
-    } = data;
-    const caption = `➥ *ɴᴀᴍᴇ:* ${Romaji}\n✰ *ᴛʏᴘᴇ:* ${ShowType}\n✰ *ꜱᴜʙᴛʏᴘᴇ:* ${Subtype}\n✰ *ꜱᴛᴀᴛᴜꜱ:* ${Status}\n✰ *ʀᴇʟᴇᴀꜱᴇᴅ:* ${Released}\n✰ *ᴇɴᴅᴇᴅ:* ${Ended}\n✰ *ᴇᴘɪꜱᴏᴅᴇꜱ:* ${Episodes}\n✰ *ᴛᴏᴛᴀʟ ʟᴇɴɢᴛʜ:* ${TotalLength}\n✰ *ᴇᴘɪꜱᴏᴅᴇ ʟᴇɴɢᴛʜ:* ${EpisodeLength}\n✰ *ᴀɢᴇ ʀᴀᴛɪɴɢ:* ${AgeRating}\n✰ *ᴘᴏᴘᴜʟᴀʀɪᴛʏ:* ${Popularity}\n✰ *ʀᴀᴛɪɴɢ:* ${Rating}\n✰ *ɴꜱꜰᴡ:* ${NSFW}\n✰ *ꜱᴜᴍᴍᴀʀʏ:* ${Summary}\n➥ *ᴛʀᴀɪʟᴇʀ:* https://youtube.com/watch?v=${YouTube}\n`;    
-    await message.send({ url: Poster }, { caption, linkPreview: { title: data['English Title'], body: Japanese, thumbnail: await getBuffer(Cover), mediaType: 1, mediaUrl: "https://github.com/Loki-Xer/Jarvis-md", sourceUrl: "https://github.com/Loki-Xer/Jarvis-md", showAdAttribution: false, renderLargerThumbnail: true }, quoted: message }, 'image');
-});
-
-System({
-    pattern: 'aquote ?(.*)',
-    fromMe: isPrivate,
-    desc: 'Get a random anime quote',
-    type: 'anime',
-}, async (message, match) => {
-    const data = await getJson(IronMan('api/aquote'));
-    if (!data && !data.result && !data.result.length > 0) return await message.reply('_*No quotes found.*_');
-    const randomIndex = Math.floor(Math.random() * data.result.length);
-    const { english: enquote, character, anime } = data.result[randomIndex];
-    await message.send(`*➭QUOTE:* ${enquote}\n*➭CHARACTER:* ${character}\n*➭ANIME:* ${anime}`);
-});
+    if (fileType === "video") {
+      await message.send(mediaUrl, { caption: sexyReply }, "video");
+    } else if (fileType === "gif") {
+      await message.send(mediaUrl, { caption: sexyReply }, "gif");
+    } else {
+      await message.send(mediaUrl, { caption: sexyReply }, "image");
+    }
+  });
+}
