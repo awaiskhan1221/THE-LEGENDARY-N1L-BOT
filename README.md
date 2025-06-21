@@ -1,94 +1,53 @@
-#### JARVIS MD WHATSAPP BOT
-jarvis md is Multi Device whatsapp bot
-***
+<p align="center">
+  <img src="https://graph.org/file/1506e5842805b0968c5cf.mp4" width="100%" alt="Bot Banner"/>
+</p>
 
-### SETUP JARVIS
+<h1 align="center">
+  ✨ 𝚻𝚮𝚵 𝐋𝚵𝐆𝚴𝚴𝐃𝚫𝚪𝐘 𝚴𝚰𝐋 𝚩𝚯𝚻 ✨
+</h1>
 
-1. Scan the QR code
-    <br>
-<a href='https://jarvis-qr.vercel.app/' target="_blank"><img alt='SCAN QR' src='https://img.shields.io/badge/Scan_qr-100000?style=for-the-badge&logo=scan&logoColor=white&labelColor=black&color=black'/></a>
+<p align="center">
+  <img src="https://your-image-link.com/profile.png" width="150" style="border-radius: 50%;" alt="Owner Pic"/>
+</p>
 
-#### DEPLOY TO HEROKU 
+<p align="center">
+  <strong>An Elite Multi-Device WhatsApp Bot developed by</strong><br>
+  <strong style="font-size: 22px; color: #00ffcc;">𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋</strong>
+</p>
 
-1. If You don't have a account in Heroku. Create a account in heroku.
-    <br>
-<a href='https://signup.heroku.com/' target="_blank"><img alt='Heroku' src='https://img.shields.io/badge/-Create-black?style=for-the-badge&logo=heroku&logoColor=white'/></a>
+---
 
-3. Now Deploy
-    <br>
-<a href='https://jarvis-qr.vercel.app/heroku' target="_blank"><img alt='Heroku' src='https://img.shields.io/badge/-Deploy-black?style=for-the-badge&logo=heroku&logoColor=white'/></a>
+<p align="center">
+  <img src="https://img.shields.io/badge/BOT%20STATUS-ACTIVE-success?style=for-the-badge&logo=whatsapp&logoColor=white" />
+  <img src="https://img.shields.io/badge/MODE-Private-yellow?style=for-the-badge&logo=android" />
+  <img src="https://img.shields.io/badge/OWNER-𝚴𝚯𝚻_𝐔𝚪_𝚴𝚰𝐋-ff69b4?style=for-the-badge" />
+</p>
 
+---
 
-#### DEPLOY TO RAILWAY
+## 🚀 QUICK DEPLOY OPTIONS
 
-1. If You don't have a account in railway. Create a account in railway.
-    <br>
-<a href='https://railway.app/login' target="_blank"><img alt='railway' src='https://img.shields.io/badge/-Create-black?style=for-the-badge&logo=railway&logoColor=white'/></a>
+> **Deploy anywhere with 1 click!**
 
-2.Get [Railway api key](https://railway.app/account/tokens)
+| ☁️ Platform | 🚀 Deploy |
+|------------|-----------|
+| 🟣 Heroku   | [Deploy Now](https://jarvis-qr.vercel.app/heroku) |
+| 🖤 Railway  | [Deploy Now](https://jarvis-qr.vercel.app/railway) |
+| ☁️ Koyeb    | [Deploy Now](https://jarvis-qr.vercel.app/koyeb) |
+| 🔵 Render   | [Deploy Now](https://jarvis-qr.vercel.app/render) |
+| 💻 Replit   | [Deploy Now](https://jarvis-qr.vercel.app/replit) |
 
-3. Now Deploy
-    <br>
-<a href='https://jarvis-qr.vercel.app/railway' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=railway&logoColor=white'/></a>
+---
 
-#### DEPLOY TO KOYEB 
+## 🧠 BOT COMMAND PREVIEW
 
-1. If You don't have a account in koyeb. Create a account.
-    <br>
-<a href='https://app.koyeb.com/auth/signup' target="_blank"><img alt='koyeb' src='https://img.shields.io/badge/-Create-black?style=for-the-badge&logo=koyeb&logoColor=white'/></a>
-
-3. Get [DATABASE_URL](https://github.com/Loki-Xer/jarvis/wiki/Data-base-url) and copy it
-
-4. Get [Koyeb api key](https://app.koyeb.com/settings/api)
-
-2. Now Deploy
-    <br>
-<a href='https://jarvis-qr.vercel.app/koyeb' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=koyeb&logoColor=white'/></a>
-
-#### DEPLOY TO PANEL
-
-1. If You don't have a account in panel create it . 
-2. How to deploy in panel?
-    <br>
-<a href='https://gist.github.com/IRON-M4N/2ab6496e34ec714682c7b6fb6ee86ca1' target="_blank"><img alt='PANEL' src='https://img.shields.io/badge/PANEL-100000?style=for-the-badge&logo=pterodactyl&logoColor=white&labelColor=black&color=black&logoSize=auto'/></a>
-
-#### DEPLOY TO RENDER 
-
-1. If You don't have a account in render. Create a account.
-    <br>
-<a href='https://dashboard.render.com/register' target="_blank"><img alt='render' src='https://img.shields.io/badge/-Create-black?style=for-the-badge&logo=render&logoColor=white'/></a>
-
-3. Get [DATABASE_URL](https://github.com/Loki-Xer/jarvis/wiki/Data-base-url) and copy it
-
-4. Get [Render api key](https://dashboard.render.com/u/settings#api-keys)
-
-
-2. Now Deploy
-    <br>
-<a href='https://jarvis-qr.vercel.app/render' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=render&logoColor=white'/></a>
-    
- 
-#### DEPLOY TO REPLIT 
-
- 1. If You don't have a account in replit. Create a account in replit.
-    <br>
-<a href='https://replit.com/login' target="_blank"><img alt='railway' src='https://img.shields.io/badge/-Create-black?style=for-the-badge&logo=replit&logoColor=white'/></a>
-
-2. Now Deploy
-    <br>
-<a href='https://jarvis-qr.vercel.app/replit' target="_blank"><img alt='DEPLOY' src='https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=replit&logoColor=white'/></a>
-
-#### THANKS TO
-- [INRL ❤️](https://github.com/inrl-official) <br>
-
-#### JARVIS SUPPORT 
-
-
-
-<a href="https://whatsapp.com/channel/0029Va9dOax4o7qDb6pVvp34"><img alt="WhatsApp" src="https://img.shields.io/badge/-Whatsapp%20Channel-white?style=for-the-badge&logo=whatsapp&logoColor=black"/></a>
-    <br>
-<br>
-<a href="https://chat.whatsapp.com/HCRUrl9kCvEL6v7OhmG5BR"><img alt="WhatsApp" src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white"/></a>
-    <br>
-<br>
-<a href='https://github.com/IRON-M4N/Jarvis-MD-Plugins' target="_blank"><img alt='jarvis-md' src='https://img.shields.io/badge/EXPLUGIN-100000?style=for-the-badge&logo=scan&logoColor=white&labelColor=black&color=black'/></a>
+```bash
+.alive      → Show bot status with stylish panel
+.menu       → Display command categories with buttons
+.sticker    → Convert image/video to sticker
+.download   → Download from YouTube, IG, FB, etc
+.ping       → Check server speed
+.welcome    → Toggle welcome message ON/OFF
+.groupinfo  → Show group details in card format
+.owner      → Contact bot owner
+.rules      → Show your own group rules
