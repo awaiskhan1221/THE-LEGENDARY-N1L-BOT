@@ -1,126 +1,127 @@
 {
-    "name": "Jarvis",
-    "version":"2.5.0",
-    "description": "Jarvis Multi Device whatsapp bot",
-    "logo": "https://i.imgur.com/PmfMtfa.jpeg",
-    "keywords": ["whatsapp"],
-    "repository": "https://github.com/Loki-Xer/Jarvis",
-    "website": "https://github.com/Loki-Xer/Jarvis",
-    "success_url": "/",
-    "stack": "container",
-    "env": {
-        "BOT_INFO": {
-            "description": "botname;ownername;image url",
-            "required": true,
-            "value":"ᴊᴀʀᴠɪꜱ;ʟᴏᴋɪ-xᴇʀ;https://i.imgur.com/VIpl3q5.mp4"
-        },
-        "MENU_FONT": {
-            "description": "type;plugin name, have to be less than 35",
-            "required": false,
-            "value":"12;9"
-        },
-        "AUDIO_DATA": {
-            "description": "audio package name",
-            "required": true,
-            "value":"ʟᴏᴋɪ-xᴇʀ;ᴊᴀʀᴠɪꜱ;https://i.imgur.com/VgxJeCm.jpeg"
-        },
-        "WARN_COUNT": {
-            "description": "warn count",
-            "required": true,
-            "value":"3"
-        },
-        "MEDIA_DATA": {
-            "description": "media data that uses in list",
-            "required": true,
-            "value":"ʟɪꜱᴛ ᴍᴇɴᴜ;ᴊᴀʀᴠɪꜱ-ᴍᴅ;https://i.imgur.com/ltPPMTh.jpeg"
-        },
-        "HANDLER": {
-            "description": "handler for bot. all so can be null or false",
-            "required": true,
-            "value":"null"
-        },
-        "SESSION_ID": {
-            "description": "session id",
-            "required": true
-        },
-        "WORK_TYPE": {
-            "description": "worker type public or private",
-            "required": true,
-            "value":"private"
-        },
-        "HEROKU_APP_NAME": {
-            "description": "heroku app name, same as above entered",
-            "required": true
-        },
-        "HEROKU_API_KEY": {
-            "description": "Heroku account api key, https://dashboard.heroku.com/account",
-            "required": true
-        },
-        "STICKER_PACKNAME": {
-            "description": "sticker package name",
-            "required": true,
-            "value":"ʟᴏᴋɪ;ᴊᴀʀᴠɪꜱ"
-        },
-        "SUDO": {
-            "description": "owner number of the bot",
-            "required": false,
-            "value":"4915252819677"
-        },
-        "ALLWAYS_ONLINE": {
-            "description": "show bot number last seen as online",
-            "required": false,
-            "value":"false"
-        },
-        "READ_MSG": {
-            "description": "Read all messages",
-            "required": false,
-            "value":"false"
-        },
-        "SAVE_STATUS": {
-            "description": "save all status message",
-            "required": false,
-            "value":"null"
-        },
-        "STATUS_VIEW": {
-            "description": "status views use true for view all status or use only-view=jid to only view given jid status or use not-view=jid to not view the one person status and view anothers",
-            "required": false,
-            "value":"false"
-        },
-        "REJECT_CALL": {
-            "description": "automatic reject call",
-            "required": true,
-            "value":"false"
-        },
-        "ERROR_MSG": {
-            "description": "send error messages to bot number",
-            "required": true,
-            "value":"false"
-        },
-        "BAN_CHATS": {
-            "description": "ban chat from useing bot value: jid1,jid2",
-            "required": false,
-            "value":""
-        },
-        "STATUS_REPLY": {
-            "description": "Reply to status",
-            "required": false,
-            "value":"false"
-        },
-        "STATUS_REPLY_MSG": {
-            "description": "Status reply message to send",
-            "required": false,
-            "value":"*Nice Status Brother 🦫✨*"
-        },
-        "CMD_REACTION": {
-            "description": "react to commands",
-            "required": false,
-            "value":"false"
-        }
+  "name": "𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 BOT",
+  "version": "1.0.0",
+  "description": "A Legendary WhatsApp Multi-Device Bot by 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋",
+  "logo": "https://i.postimg.cc/020SdR2B/a3a97dd1-10bc-4f0c-86e8-543c684a7419.jpg",
+  "keywords": ["whatsapp", "multi-device", "legendary-bot"],
+  "repository": "https://github.com/awaiskhan1221/legendary-md",
+  "website": "https://github.com/awaiskhan1221",
+  "success_url": "/",
+  "stack": "container",
+
+  "env": {
+    "BOT_INFO": {
+      "description": "botname;ownername;image url",
+      "required": true,
+      "value": "𝚴𝚯𝚻 BOT;𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋;https://i.postimg.cc/RFddD6vj/93f52fb3-70a2-4d6b-b487-c3f3519b679b.jpg"
     },
-      "addons": [{ "plan": "heroku-postgresql" }],
-      "buildpacks": [
-                    { "url": "https://github.com/heroku/heroku-buildpack-nodejs#latest" },
-                    { "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git" }
-    ]
-  }
-  
+    "MENU_FONT": {
+      "description": "Menu font settings",
+      "required": false,
+      "value": "12;𝚴𝚯𝚻-BUTTON"
+    },
+    "AUDIO_DATA": {
+      "description": "audio metadata",
+      "required": true,
+      "value": "𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋;Legendary-Bot;https://i.imgur.com/VgxJeCm.jpeg"
+    },
+    "MEDIA_DATA": {
+      "description": "media header content",
+      "required": true,
+      "value": "Legendary Menu;𝚴𝚯𝚻-𝐌𝐃;https://i.imgur.com/ltPPMTh.jpeg"
+    },
+    "WARN_COUNT": {
+      "description": "Number of warnings before action",
+      "required": true,
+      "value": "3"
+    },
+    "HANDLER": {
+      "description": "command prefix",
+      "required": true,
+      "value": "null"
+    },
+    "SESSION_ID": {
+      "description": "WhatsApp session string",
+      "required": true
+    },
+    "WORK_TYPE": {
+      "description": "public or private",
+      "required": true,
+      "value": "private"
+    },
+    "HEROKU_APP_NAME": {
+      "description": "Name of the deployed app",
+      "required": true
+    },
+    "HEROKU_API_KEY": {
+      "description": "Heroku dashboard API key",
+      "required": true
+    },
+    "STICKER_PACKNAME": {
+      "description": "sticker credit tag",
+      "required": true,
+      "value": "𝚴𝚯𝚻;𝚴𝚰𝐋"
+    },
+    "SUDO": {
+      "description": "owner number",
+      "required": true,
+      "value": "923474810818"
+    },
+    "ALLWAYS_ONLINE": {
+      "description": "always online indicator",
+      "required": false,
+      "value": "false"
+    },
+    "READ_MSG": {
+      "description": "auto read messages",
+      "required": false,
+      "value": "false"
+    },
+    "SAVE_STATUS": {
+      "description": "save viewed statuses",
+      "required": false,
+      "value": "false"
+    },
+    "STATUS_VIEW": {
+      "description": "view others' statuses",
+      "required": false,
+      "value": "true"
+    },
+    "REJECT_CALL": {
+      "description": "auto reject incoming calls",
+      "required": true,
+      "value": "true"
+    },
+    "ERROR_MSG": {
+      "description": "send error logs to owner",
+      "required": true,
+      "value": "false"
+    },
+    "BAN_CHATS": {
+      "description": "comma-separated blocked chats",
+      "required": false,
+      "value": ""
+    },
+    "STATUS_REPLY": {
+      "description": "auto reply to statuses",
+      "required": false,
+      "value": "true"
+    },
+    "STATUS_REPLY_MSG": {
+      "description": "custom status reply",
+      "required": false,
+      "value": "*🔥 LEGENDARY STATUS BROTHER!*"
+    },
+    "CMD_REACTION": {
+      "description": "bot reacts to commands",
+      "required": false,
+      "value": "true"
+    }
+  },
+
+  "addons": [{ "plan": "heroku-postgresql" }],
+  "buildpacks": [
+    { "url": "https://github.com/heroku/heroku-buildpack-nodejs#latest" },
+    { "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git" }
+  ]
+}
