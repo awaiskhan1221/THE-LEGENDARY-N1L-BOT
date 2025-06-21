@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://graph.org/file/1506e5842805b0968c5cf.mp4" width="100%" alt="Bot Banner"/>
+  <img src="assets/banner.mp4" width="100%" alt="𝚻𝚮𝚵 𝐁𝐎𝐓 BANNER"/>
 </p>
 
 <h1 align="center">
@@ -7,7 +7,7 @@
 </h1>
 
 <p align="center">
-  <img src="https://your-image-link.com/profile.png" width="150" style="border-radius: 50%;" alt="Owner Pic"/>
+  <img src="assets/owner-pic.png" width="150" style="border-radius: 50%;" alt="Owner Picture"/>
 </p>
 
 <p align="center">
@@ -27,15 +27,13 @@
 
 ## 🚀 QUICK DEPLOY OPTIONS
 
-> **Deploy anywhere with 1 click!**
-
-| ☁️ Platform | 🚀 Deploy |
-|------------|-----------|
-| 🟣 Heroku   | [Deploy Now](https://jarvis-qr.vercel.app/heroku) |
-| 🖤 Railway  | [Deploy Now](https://jarvis-qr.vercel.app/railway) |
-| ☁️ Koyeb    | [Deploy Now](https://jarvis-qr.vercel.app/koyeb) |
-| 🔵 Render   | [Deploy Now](https://jarvis-qr.vercel.app/render) |
-| 💻 Replit   | [Deploy Now](https://jarvis-qr.vercel.app/replit) |
+| Platform | Deploy |
+|---------|--------|
+| 🟣 Heroku | [Deploy Now](https://jarvis-qr.vercel.app/heroku) |
+| 🖤 Railway | [Deploy Now](https://jarvis-qr.vercel.app/railway) |
+| ☁️ Koyeb | [Deploy Now](https://jarvis-qr.vercel.app/koyeb) |
+| 🔵 Render | [Deploy Now](https://jarvis-qr.vercel.app/render) |
+| 💻 Replit | [Deploy Now](https://jarvis-qr.vercel.app/replit) |
 
 ---
 
