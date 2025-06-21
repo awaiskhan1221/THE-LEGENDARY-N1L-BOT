@@ -1,41 +1,47 @@
----
+<p align="center">
+  <img src="https://i.postimg.cc/RFddD6vj/93f52fb3-70a2-4d6b-b487-c3f3519b679b.jpg" width="100%" alt="LEGENDARY BOT BANNER"/>
+</p>
 
-## 📢 CONNECT WITH OWNER
+<h1 align="center">✨ 𝚻𝚮𝚵 𝐋𝚵𝐆𝚴𝚴𝐃𝚫𝚪𝐘 𝚴𝚰𝐋 𝚩𝚯𝚻 ✨</h1>
 
 <p align="center">
-  <a href="https://wa.me/923XXXXXXXXX"><img src="https://img.shields.io/badge/WhatsApp-Chat-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" /></a>
-  <a href="https://github.com/YourGitHub"><img src="https://img.shields.io/badge/GitHub-Follow-181717?style=for-the-badge&logo=github" /></a>
-  <a href="https://youtube.com/@YourChannel"><img src="https://img.shields.io/badge/YouTube-Subscribe-FF0000?style=for-the-badge&logo=youtube&logoColor=white" /></a>
+  <img src="https://i.postimg.cc/020SdR2B/a3a97dd1-10bc-4f0c-86e8-543c684a7419.jpg" width="140" style="border-radius: 50%;" alt="Owner Picture"/>
+</p>
+
+<p align="center">
+  <strong>An Elite Multi-Device WhatsApp Bot developed by</strong><br>
+  <strong style="font-size: 22px; color: #00ffcc;">𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋</strong>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/BOT%20STATUS-ACTIVE-success?style=for-the-badge&logo=whatsapp&logoColor=white" />
+  <img src="https://img.shields.io/badge/MODE-Private-yellow?style=for-the-badge&logo=android" />
+  <img src="https://img.shields.io/badge/OWNER-𝚴𝚯𝚻_𝐔𝚪_𝚴𝚰𝐋-ff69b4?style=for-the-badge" />
 </p>
 
 ---
 
-## 🎖️ LEGENDARY STRIP BADGES
+## 🚀 QUICK DEPLOY OPTIONS
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Node.js-%2018.x-brightgreen?style=for-the-badge&logo=node.js&logoColor=white" />
-  <img src="https://img.shields.io/badge/Platform-Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white" />
-  <img src="https://img.shields.io/badge/Language-JavaScript-yellow?style=for-the-badge&logo=javascript&logoColor=black" />
-  <img src="https://img.shields.io/badge/Framework-Baileys-282C34?style=for-the-badge&logo=whatsapp&logoColor=white" />
-</p>
-
----
-
-## 💬 CREDITS
-
-- 🤖 Bot Base: [Baileys-MD](https://github.com/adiwajshing/Baileys)
-- 🔧 Inspired By: Loki-Xer (original JARVIS)
-- 🎨 UI Polish by: **𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋**
+| Platform | Deploy |
+|---------|--------|
+| 🟣 Heroku | [Deploy Now](https://jarvis-qr.vercel.app/heroku) |
+| 🖤 Railway | [Deploy Now](https://jarvis-qr.vercel.app/railway) |
+| ☁️ Koyeb | [Deploy Now](https://jarvis-qr.vercel.app/koyeb) |
+| 🔵 Render | [Deploy Now](https://jarvis-qr.vercel.app/render) |
+| 💻 Replit | [Deploy Now](https://jarvis-qr.vercel.app/replit) |
 
 ---
 
-## 📄 LICENSE
+## 🧠 BOT COMMAND PREVIEW
 
-This project is licensed under the [MIT License](https://choosealicense.com/licenses/mit/).  
-You’re free to remix, modify, and glow up your own version 💎
-
----
-
-<p align="center">
-  Made with 💖 by <strong>𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋</strong>
-</p>
+```bash
+.alive      → Show bot status with stylish panel
+.menu       → Display command categories with buttons
+.sticker    → Convert image/video to sticker
+.download   → Download from YouTube, IG, FB, etc
+.ping       → Check server speed
+.welcome    → Toggle welcome message ON/OFF
+.groupinfo  → Show group details in card format
+.owner      → Contact bot owner
+.rules      → Show your own group rules
