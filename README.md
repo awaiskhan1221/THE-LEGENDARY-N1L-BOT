@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://graph.org/file/1506e5842805b0968c5cf.mp4" width="100%" alt="𝚻𝚮𝚵 𝐁𝐎𝐓 BANNER"/>
+  <img src="https://i.postimg.cc/RFddD6vj/93f52fb3-70a2-4d6b-b487-c3f3519b679b.jpg" width="100%" alt="LEGENDARY BOT BANNER"/>
 </p>
 
 <h1 align="center">
@@ -7,15 +7,13 @@
 </h1>
 
 <p align="center">
-  <img src="https://i.imgur.com/7LKjrLD8W17gjh38di4Ro.jpeg" width="150" height="150" style="border-radius: 50%; border: 4px solid #00ffee;" alt="Owner Picture"/>
+  <img src="assets/owner-pic.png" width="140" style="border-radius: 50%;" alt="Owner Picture"/>
 </p>
 
 <p align="center">
-  <strong>🔥 An Elite Multi-Device WhatsApp Bot 🔥</strong><br>
-  powered by <strong style="font-size: 20px; color: #00ffcc;">𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋</strong>
+  <strong>An Elite Multi-Device WhatsApp Bot developed by</strong><br>
+  <strong style="font-size: 22px; color: #00ffcc;">𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋</strong>
 </p>
-
----
 
 <p align="center">
   <img src="https://img.shields.io/badge/BOT%20STATUS-ACTIVE-success?style=for-the-badge&logo=whatsapp&logoColor=white" />
@@ -26,8 +24,6 @@
 ---
 
 ## 🚀 QUICK DEPLOY OPTIONS
-
-Deploy your personal copy now:
 
 | Platform | Deploy |
 |---------|--------|
