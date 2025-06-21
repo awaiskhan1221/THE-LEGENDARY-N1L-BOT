@@ -1,36 +1,51 @@
 {
-    "name": "Jarvis-md",
-    "version": "3.0.0",
-    "description": "A simple WhatsApp Bot Based On WhiskeySockets/Baileys",
-    "main": "index.js",
-    "scripts": {
-        "postinstall": "node -e \"try { require('sharp') } catch (e) { process.exit(1); }\" || yarn add --ignore-engines sharp@0.33.5",
-        "start": "pm2 start . --attach --name Jarvis-md",
-        "stop": "pm2 stop Jarvis-md"
-    },
-    "engines": {
-        "node": ">=18.0.0 <=22.x"
-    },
-    "license": "MIT",
-    "dependencies": {
-        "@whiskeysockets/baileys": "github:Loki-Xer/Baileys",
-        "async-lock": "^1.4.1",
-        "browser-id3-writer": "^4.4.0",
-        "cheerio": "^1.0.0",
-        "node-cron": "^3.0.3",
-        "jarvis-md": "^1.0.7",
-        "jimp": "^0.16.1",
-        "fluent-ffmpeg": "^2.1.2",
-        "form-data": "^4.0.0",
-        "link-preview-js": "^3.0.4",
-        "libphonenumber-js": "^1.12.6",
-        "node-webpmux": "^3.2.0",
-        "pdfkit": "^0.15.0",
-        "pm2": "^5.4.2",
-        "pg": "^8.7.3",
-        "sequelize": "^6.21.4",
-        "sharp": "^0.33.5",
-        "simple-git": "^3.20.0",
-        "sqlite3": "^5.0.11"
-    }
+  "name": "legendary-md",
+  "version": "7.0.0",
+  "description": "🔥 The Ultimate WhatsApp Multi-Device Bot, forged by 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 for true legends.",
+  "author": "𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋",
+  "license": "MIT",
+  "main": "index.js",
+  "keywords": [
+    "whatsapp-bot",
+    "legendary-md",
+    "multi-device",
+    "baileys",
+    "𝚴𝚯𝚻",
+    "𝐔𝚪",
+    "𝚴𝚰𝐋",
+    "whatsapp-md",
+    "bot-md",
+    "legendary-bot"
+  ],
+  "scripts": {
+    "start": "pm2 start . --attach --name legendary-md",
+    "stop": "pm2 stop legendary-md",
+    "restart": "pm2 restart legendary-md",
+    "logs": "pm2 logs legendary-md",
+    "postinstall": "node -e \"try { require('sharp') } catch (e) { process.exit(1); }\" || yarn add --ignore-engines sharp@0.33.5"
+  },
+  "engines": {
+    "node": ">=18.0.0 <=22.x"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.5.0",
+    "async-lock": "^1.4.1",
+    "browser-id3-writer": "^4.4.0",
+    "cheerio": "^1.0.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "form-data": "^4.0.0",
+    "jarvis-md": "^1.0.7",
+    "jimp": "^0.16.1",
+    "libphonenumber-js": "^1.12.6",
+    "link-preview-js": "^3.0.4",
+    "node-cron": "^3.0.3",
+    "node-webpmux": "^3.2.0",
+    "pdfkit": "^0.15.0",
+    "pg": "^8.7.3",
+    "pm2": "^5.4.2",
+    "sequelize": "^6.21.4",
+    "sharp": "^0.33.5",
+    "simple-git": "^3.20.0",
+    "sqlite3": "^5.0.11"
+  }
 }
