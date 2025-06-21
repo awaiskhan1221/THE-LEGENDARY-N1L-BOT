@@ -33,6 +33,32 @@
 
 ---
 
+## 🟩 WHATSAPP SESSION SETUP (Scan QR Code)
+
+✨ Scan QR Code from any below panel to link your WhatsApp:
+
+<p align="center">
+  <a href="https://jarvis-qr.vercel.app">
+    <img src="https://img.shields.io/badge/QR%20Panel%201-Click%20to%20Scan-00c853?style=for-the-badge&logo=whatsapp&logoColor=white"/>
+  </a>
+  <a href="https://whatsapp-qr-generator-md.vercel.app">
+    <img src="https://img.shields.io/badge/QR%20Panel%202-Backup-00b894?style=for-the-badge&logo=whatsapp&logoColor=white"/>
+  </a>
+  <a href="https://session-md.vercel.app">
+    <img src="https://img.shields.io/badge/QR%20Panel%203-Scan-00cec9?style=for-the-badge&logo=whatsapp&logoColor=white"/>
+  </a>
+  <a href="https://jarvis-mdsession.vercel.app">
+    <img src="https://img.shields.io/badge/QR%20Panel%204-Extra-0984e3?style=for-the-badge&logo=whatsapp&logoColor=white"/>
+  </a>
+  <a href="https://multidevice-qr-code.vercel.app">
+    <img src="https://img.shields.io/badge/QR%20Panel%205-MultiQR-6c5ce7?style=for-the-badge&logo=whatsapp&logoColor=white"/>
+  </a>
+</p>
+
+📝 If one QR doesn’t load, try another. Don’t close the QR tab while scanning.
+
+---
+
 ## 🧠 BOT COMMAND PREVIEW
 
 ```bash
