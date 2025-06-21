@@ -35,27 +35,27 @@
 
 ## 🟩 WHATSAPP SESSION SETUP (Scan QR Code)
 
-✨ Scan QR Code from any below panel to link your WhatsApp:
+✨ Use any panel below to generate your WhatsApp session QR:
 
 <p align="center">
   <a href="https://jarvis-qr.vercel.app">
-    <img src="https://img.shields.io/badge/QR%20Panel%201-Click%20to%20Scan-00c853?style=for-the-badge&logo=whatsapp&logoColor=white"/>
+    <img src="https://img.shields.io/badge/QR%20Panel%201-Primary-00c853?style=for-the-badge&logo=whatsapp&logoColor=white" />
   </a>
-  <a href="https://whatsapp-qr-generator-md.vercel.app">
-    <img src="https://img.shields.io/badge/QR%20Panel%202-Backup-00b894?style=for-the-badge&logo=whatsapp&logoColor=white"/>
+  <a href="https://md-session-qr.vercel.app">
+    <img src="https://img.shields.io/badge/QR%20Panel%202-Backup-00b894?style=for-the-badge&logo=whatsapp&logoColor=white" />
   </a>
-  <a href="https://session-md.vercel.app">
-    <img src="https://img.shields.io/badge/QR%20Panel%203-Scan-00cec9?style=for-the-badge&logo=whatsapp&logoColor=white"/>
+  <a href="https://scan-qr-md.onrender.com">
+    <img src="https://img.shields.io/badge/QR%20Panel%203-Extra-00cec9?style=for-the-badge&logo=whatsapp&logoColor=white" />
   </a>
-  <a href="https://jarvis-mdsession.vercel.app">
-    <img src="https://img.shields.io/badge/QR%20Panel%204-Extra-0984e3?style=for-the-badge&logo=whatsapp&logoColor=white"/>
+  <a href="https://whatsapp-session-md.vercel.app">
+    <img src="https://img.shields.io/badge/QR%20Panel%204-Baileys%20Scan-0984e3?style=for-the-badge&logo=whatsapp&logoColor=white" />
   </a>
-  <a href="https://multidevice-qr-code.vercel.app">
-    <img src="https://img.shields.io/badge/QR%20Panel%205-MultiQR-6c5ce7?style=for-the-badge&logo=whatsapp&logoColor=white"/>
+  <a href="https://qrconnect-md.vercel.app">
+    <img src="https://img.shields.io/badge/QR%20Panel%205-MultiDevice-6c5ce7?style=for-the-badge&logo=whatsapp&logoColor=white" />
   </a>
 </p>
 
-📝 If one QR doesn’t load, try another. Don’t close the QR tab while scanning.
+📝 _Scan from WhatsApp on your phone → Linked Devices → Scan QR. If one doesn’t work, try the next._
 
 ---
 
