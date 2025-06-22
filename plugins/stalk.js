@@ -1,85 +1,87 @@
-/*------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-Copyright (C) 2023 Loki - Xer.
-Licensed under the  GPL-3.0 License;
-you may not use this file except in compliance with the License.
-Jarvis - Loki-Xer 
-
-
-------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
+/*═══════════════════════════════════════════════◆
+   💋 𝚻𝚮𝚵 𝐋𝚵𝐆𝚴𝚴𝚫𝚪𝐄 𝚴𝚰𝐋 𝚩𝚯𝚻 🔥 - stalk.js module
+   💎 Copyright © 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 👑
+   🔞 Stylish | Romantic | Sexy Bot System
+═══════════════════════════════════════════════◆*/
 
 const { System, IronMan, isPrivate, getJson } = require("../lib/");
 
-
+//💗 Instagram Stalk
 System({
-    pattern: 'ig ?(.*)',
-    fromMe: isPrivate,
-    desc: 'Instagram profile details',
-    type: 'stalk',
-}, async (message, match) => {
-    if (!match) return await message.reply("*Need a username*\n_Example: .ig sedboy.am_");
-    var data = await getJson(IronMan(`ironman/igstalk?id=${encodeURIComponent(match.trim())}`));
-    var caption = '';
-    if (data.name) caption += `*𖢈ɴᴀᴍᴇ:* ${data.name}\n`;
-    if (data.username) caption += `*𖢈ᴜꜱᴇʀɴᴀᴍᴇ:* ${data.username}\n`;
-    if (data.bio) caption += `*𖢈ʙɪᴏ:* ${data.bio}\n`;
-    if (data.pronouns && data.pronouns.length > 0) caption += `*𖢈ᴘʀᴏɴᴏᴜɴꜱ:* ${data.pronouns.join(', ')}\n`;
-    if (data.followers) caption += `*𖢈ꜰᴏʟʟᴏᴡᴇʀꜱ:* ${data.followers}\n`;
-    if (data.following) caption += `*𖢈ꜰᴏʟʟᴏᴡɪɴɢ:* ${data.following}\n`;
-    if (data.category) caption += `*𖢈ᴄᴀᴛᴇɢᴏʀʏ:* ${data.category}\n`;
-    if (typeof data.private !== 'undefined') caption += `*𖢈ᴘʀɪᴠᴀᴛᴇ ᴀᴄᴄ:* ${data.private}\n`;
-    if (typeof data.business !== 'undefined') caption += `*𖢈ʙᴜꜱꜱɪɴᴇꜱ ᴀᴄᴄ:* ${data.business}\n`;
-    if (data.email) caption += `*𖢈ᴇᴍᴀɪʟ:* ${data.email}\n`;
-    if (data.url) caption += `*𖢈ᴜʀʟ:* ${data.url}\n`;
-    if (data.contact) caption += `*𖢈ɴᴜᴍʙᴇʀ:* ${data.contact}\n`;
-    if (data.action_button) caption += `*𖢈ᴀᴄᴛɪᴏɴ ʙᴜᴛᴛᴏɴ:* ${data.action_button}\n`;
-    await message.send({ url: data.hdpfp }, { caption: caption.trim(), quoted: message }, "image");
+  pattern: 'ig ?(.*)',
+  fromMe: isPrivate,
+  desc: '✨ ɢᴇᴛ ɪɴꜱᴛᴀɢʀᴀᴍ ᴘʀᴏꜰɪʟᴇ ᴅᴇᴛᴀɪʟꜱ',
+  type: 'stalk',
+}, async (msg, text) => {
+  if (!text) return await msg.reply("*💘 Darling... give me a username, please~*\n\n_Example: .ig sedboy.am_");
+  const res = await getJson(IronMan(`ironman/igstalk?id=${encodeURIComponent(text.trim())}`));
+  let caption = `🍓 *ɪɴꜱᴛᴀ ᴘʀᴏꜰɪʟᴇ ꜱᴇᴀʀᴄʜ ꜰᴏʀ @${text}* 💘\n\n`;
+  if (res.name) caption += `• 𓆩 ɴᴀᴍᴇ: ${res.name}\n`;
+  if (res.username) caption += `• 𓆩 ᴜꜱᴇʀɴᴀᴍᴇ: ${res.username}\n`;
+  if (res.bio) caption += `• 𓆩 ʙɪᴏ: ${res.bio}\n`;
+  if (res.pronouns?.length) caption += `• 𓆩 ᴘʀᴏɴᴏᴜɴꜱ: ${res.pronouns.join(', ')}\n`;
+  if (res.followers) caption += `• 𓆩 ꜰᴏʟʟᴏᴡᴇʀꜱ: ${res.followers}\n`;
+  if (res.following) caption += `• 𓆩 ꜰᴏʟʟᴏᴡɪɴɢ: ${res.following}\n`;
+  if (res.private !== undefined) caption += `• 𓆩 ᴘʀɪᴠᴀᴛᴇ: ${res.private ? 'Yes 🔐' : 'No 🔓'}\n`;
+  if (res.email) caption += `• 𓆩 ᴇᴍᴀɪʟ: ${res.email}\n`;
+  if (res.contact) caption += `• 𓆩 ᴄᴏɴᴛᴀᴄᴛ: ${res.contact}\n`;
+  await msg.send({ url: res.hdpfp }, { caption: caption.trim(), quoted: msg }, "image");
 });
 
+//💗 GitHub Stalk
 System({
-    pattern: 'gitinfo ?(.*)',
-    fromMe: isPrivate,
-    desc: 'github user details',
-    type: 'stalk',
-}, async (message, match) => {
-    if (!match) return await message.reply("*_Need Github UserName_*");   
-    const data = await getJson(`https://api.github.com/users/${match}`);
-    const GhUserPP = data.avatar_url || "https://graph.org/file/924bcf22ea2aab5208489.jpg";
-    const userInfo = `\n⎔ *Username* : ${data.login} \n⎔ *Name* : ${data.name || "Not Available"} \n⎔ *Bio* : ${data.bio || "Not Available"} \n\n➭ *ID* : ${data.id}\n➭ *Followers* : ${data.followers}\n➭ *Following* : ${data.following}\n➭ *Type* : ${data.type}\n➭ *Company* : ${data.company || "Not Available"}\n➭ *Public Repos* : ${data.public_repos}\n➭ *Public Gists* : ${data.public_gists}\n➭ *Email* : ${data.email || "Not Available"}\n➭ *Twitter* : ${data.twitter_username || "Not Available"}\n➭ *Location* : ${data.location || "Not Available"}\n➭ *Blog* : ${data.blog || "Not Available"}\n➭ *Profile URL* : ${data.html_url}\n➭ *Created At* : ${data.created_at}\n\n`;
-    await message.send({ url: GhUserPP }, { caption: userInfo }, "image");
+  pattern: 'gitinfo ?(.*)',
+  fromMe: isPrivate,
+  desc: '✨ ɢɪᴛʜᴜʙ ᴘʀᴏꜰɪʟᴇ ᴅᴇᴛᴀɪʟꜱ',
+  type: 'stalk',
+}, async (msg, text) => {
+  if (!text) return await msg.reply("*🌹 Baby, give me a GitHub username 💻*");
+  const user = await getJson(`https://api.github.com/users/${text}`);
+  const caption = `🌟 *GitHub Profile: ${user.login}*\n\n`
+    + `• 🧸 Name: ${user.name || "Unknown"}\n`
+    + `• 🖋 Bio: ${user.bio || "No bio"}\n`
+    + `• 🛠 Repos: ${user.public_repos}\n`
+    + `• ⭐ Followers: ${user.followers}\n`
+    + `• 💌 Email: ${user.email || "Not Public"}\n`
+    + `• 📍 Location: ${user.location || "Hidden"}\n`
+    + `• 🔗 Profile: ${user.html_url}\n`
+    + `• 🕰 Joined: ${user.created_at}`;
+  await msg.send({ url: user.avatar_url }, { caption }, "image");
 });
 
+//💗 TikTok Stalk
 System({
   pattern: 'tkt ?(.*)',
   fromMe: isPrivate,
-  desc: 'TikTok Stalk',
+  desc: '✨ ᴛɪᴋᴛᴏᴋ ᴜꜱᴇʀ ᴅᴇᴛᴀɪʟꜱ',
   type: 'stalk',
-}, async (message, match) => {
-  if (!match) return await message.reply("*Need a TikTok username*");
-  const response = await fetch(IronMan(`ironman/stalk/tiktok?id=${encodeURIComponent(match)}`));
-  const data = await response.json();
-  const { user, stats } = data;
-  const caption = `*⭑⭑⭑⭑ᴛɪᴋᴛᴏᴋ ꜱᴛᴀʟᴋ ʀᴇꜱᴜʟᴛ⭑⭑⭑⭑*\n\n`
-    + `*➥ᴜꜱᴇʀɴᴀᴍᴇ:* ${user.uniqueId}\n`
-    + `*➥ɴɪᴄᴋɴᴀᴍᴇ:* ${user.nickname}\n`
-    + `*➥ʙɪᴏ:* ${user.signature}\n`
-    + `*➥ᴠᴇʀɪꜰɪᴇᴅ:* ${user.verified}\n`
-    + `*➥ꜰᴏʟʟᴏᴡᴇʀꜱ:* ${stats.followerCount}\n`
-    + `*➥ꜰᴏʟʟᴏᴡɪɴɢ:* ${stats.followingCount}\n`
-    + `*➥ʜᴇᴀʀᴛꜱ:* ${stats.heartCount}\n`
-    + `*➥ᴠɪᴅᴇᴏꜱ:* ${stats.videoCount}`;
-  await message.send({ url: user.avatarLarger }, { caption }, "image");
+}, async (msg, text) => {
+  if (!text) return await msg.reply("*👅 Sweetheart, I need a TikTok username...*");
+  const res = await getJson(IronMan(`ironman/stalk/tiktok?id=${encodeURIComponent(text)}`));
+  const { user, stats } = res;
+  const caption = `👑 *TikTok Love Scan for* @${user.uniqueId} 💘\n\n`
+    + `• 💞 Nickname: ${user.nickname}\n`
+    + `• 💬 Bio: ${user.signature}\n`
+    + `• ✅ Verified: ${user.verified ? 'Yes 💯' : 'No ❌'}\n`
+    + `• 🧚 Followers: ${stats.followerCount}\n`
+    + `• 🔥 Hearts: ${stats.heartCount}\n`
+    + `• 📸 Videos: ${stats.videoCount}`;
+  await msg.send({ url: user.avatarLarger }, { caption }, "image");
 });
 
+//💗 Telegram Stalk
 System({
-    pattern: 'telegram ?(.*)',
-    fromMe: isPrivate,
-    desc: 'telegram profile details',
-    type: 'stalk',
-}, async (message, match) => {
-    if (!match) return await message.reply("*Need a username*\n_Example: .telegram @TGMovies2Bot_");
-    const { result } = await getJson(api + "stalk/telegram?query=" + match)
-    return message.reply({ url: result.profile }, { caption: `*User name :* ${result.userName}\n*Nick name :* ${result.nickName}\n*About :* ${result.about}\n*Via telegram :* ${result.telegram}`}, "image")
+  pattern: 'telegram ?(.*)',
+  fromMe: isPrivate,
+  desc: '✨ ᴛᴇʟᴇɢʀᴀᴍ ᴜꜱᴇʀ ɪɴꜰᴏ',
+  type: 'stalk',
+}, async (msg, text) => {
+  if (!text) return await msg.reply("*👑 Baby tell me a Telegram username 💌*\n_Example: .telegram @Nil_");
+  const { result } = await getJson(api + "stalk/telegram?query=" + text);
+  const caption = `💫 *Telegram User Scan*\n\n`
+    + `• 💘 User: ${result.userName}\n`
+    + `• 🌸 Name: ${result.nickName}\n`
+    + `• 💌 Bio: ${result.about}\n`
+    + `• 🛜 Link: ${result.telegram}`;
+  await msg.send({ url: result.profile }, { caption }, "image");
 });
