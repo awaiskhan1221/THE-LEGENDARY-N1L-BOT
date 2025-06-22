@@ -1,51 +1,12 @@
-{
-  "name": "legendary-md",
-  "version": "7.0.0",
-  "description": "🔥 The Ultimate WhatsApp Multi-Device Bot, forged by 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 for true legends.",
-  "author": "𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋",
-  "license": "MIT",
-  "main": "index.js",
-  "keywords": [
-    "whatsapp-bot",
-    "legendary-md",
-    "multi-device",
-    "baileys",
-    "𝚴𝚯𝚻",
-    "𝐔𝚪",
-    "𝚴𝚰𝐋",
-    "whatsapp-md",
-    "bot-md",
-    "legendary-bot"
-  ],
-  "scripts": {
-    "start": "pm2 start . --attach --name legendary-md",
-    "stop": "pm2 stop legendary-md",
-    "restart": "pm2 restart legendary-md",
-    "logs": "pm2 logs legendary-md",
-    "postinstall": "node -e \"try { require('sharp') } catch (e) { process.exit(1); }\" || yarn add --ignore-engines sharp@0.33.5"
-  },
-  "engines": {
-    "node": ">=18.0.0 <=22.x"
-  },
-  "dependencies": {
-    "@whiskeysockets/baileys": "^6.5.0",
-    "async-lock": "^1.4.1",
-    "browser-id3-writer": "^4.4.0",
-    "cheerio": "^1.0.0",
-    "fluent-ffmpeg": "^2.1.2",
-    "form-data": "^4.0.0",
-    "jarvis-md": "^1.0.7",
-    "jimp": "^0.16.1",
-    "libphonenumber-js": "^1.12.6",
-    "link-preview-js": "^3.0.4",
-    "node-cron": "^3.0.3",
-    "node-webpmux": "^3.2.0",
-    "pdfkit": "^0.15.0",
-    "pg": "^8.7.3",
-    "pm2": "^5.4.2",
-    "sequelize": "^6.21.4",
-    "sharp": "^0.33.5",
-    "simple-git": "^3.20.0",
-    "sqlite3": "^5.0.11"
-  }
-}
+const { Client } = require("whatsapp-web.js");
+const qrcode = require("qrcode-terminal");
+
+const client = new Client();
+
+client.on("qr", qr => qrcode.generate(qr, { small: true }));
+
+client.on("ready", () => {
+  console.log("💼 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 Bot is alive!");
+});
+
+client.initialize();
