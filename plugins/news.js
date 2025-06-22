@@ -1,69 +1,75 @@
-const { System, isPrivate, TechNews } = require("../lib/");
+/*───────────────────────────────────────────────╮
+  🌐 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 👑 » Multi News Module » news.js
+  📰 Covers Tech, World, Sports & Politics News
+╰───────────────────────────────────────────────*/
 
+const { System, isPrivate, TechNews, getJson } = require("../lib/");
+const NEWS_API = "https://newsdata.io/api/1/news?apikey=your_api_key&country=us&language=en&category=";
+
+// ✨ Stylish Helper Function
+async function sendNews(message, data, type, emoji) {
+  if (!data || data.length === 0) return await message.reply(`❌ No fresh ${type} news found.`);
+
+  const random = data[Math.floor(Math.random() * data.length)];
+  const { title, link, image_url } = random;
+
+  return await message.send({ url: image_url || "" }, {
+    caption: `${emoji} *${type.toUpperCase()} HEADLINE*\n\n*📌 Title:* ${title}\n🔗 *Link:* ${link}\n\n💋 _𝙱𝚛𝚘𝚞𝚐𝚑𝚝 𝚃𝚘 𝚈𝚘𝚞 𝙱𝚢 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 👑_`
+  }, "image");
+}
+
+// 🖥️ TECHNEWS - Based on Custom Class
 System({
-  pattern: 'technews (.*)',
+  pattern: 'technews ?(.*)',
   fromMe: isPrivate,
-  desc: 'Get tech news',
+  desc: '🖥️ Latest in Tech World',
   type: 'news',
 }, async (message, match) => {
+  const topic = match.toLowerCase().trim();
   const techNews = new TechNews();
-  const topic = match.toLowerCase();
-  const availableTopics = ['gadgets', 'technology', 'laptops', 'reviews', 'science', 'gallery', 'videos', 'mobiles', 'techook'];
-  
-  if (availableTopics.includes(topic)) {
-    const result = await techNews.news(topic);
-    let newsItem;
-    
-    if (result.gadgets) {
-      const gadgets = result.gadgets;
-      const randomIndex = Math.floor(Math.random() * gadgets.length);
-      newsItem = gadgets[randomIndex];
-    } else if (result.technology) {
-      const technology = result.technology;
-      const randomIndex = Math.floor(Math.random() * technology.length);
-      newsItem = technology[randomIndex];
-    } else if (result.videos) {
-      const videos = result.videos;
-      const randomIndex = Math.floor(Math.random() * videos.length);
-      newsItem = videos[randomIndex];
-    } else if (result.laptops) {
-      const laptops = result.laptops;
-      const randomIndex = Math.floor(Math.random() * laptops.length);
-      newsItem = laptops[randomIndex];
-    } else if (result.reviews) {
-      const reviews = result.reviews;
-      const randomIndex = Math.floor(Math.random() * reviews.length);
-      newsItem = reviews[randomIndex];
-    } else if (result.science) {
-      const science = result.science;
-      const randomIndex = Math.floor(Math.random() * science.length);
-      newsItem = science[randomIndex];
-    } else if (result.gallery) {
-      const gallery = result.gallery;
-      const randomIndex = Math.floor(Math.random() * gallery.length);
-      newsItem = gallery[randomIndex];
-    } else if (result.mobiles) {
-      const mobiles = result.mobiles;
-      const randomIndex = Math.floor(Math.random() * mobiles.length);
-      newsItem = mobiles[randomIndex];
-    } else if (result.techook) {
-      const techook = result.techook;
-      const randomIndex = Math.floor(Math.random() * techook.length);
-      newsItem = techook[randomIndex];
-    } else {
-      newsItem = result;
-    }
-    
-    if (newsItem) {
-      await message.send(`*TITLE:* ${newsItem.title}\n*LINK:* ${newsItem.link}`, {
-        image: newsItem.image,
-        footer: "*JARVIS-MD*",
-        title: "*TOP TECH NEWS*"
-      });
-    } else {
-      await message.reply(`*No news found for* ${topic}`);
-    }
-  } else {
-    await message.reply(`*Available topics:* ${availableTopics.join(', ')}. *Please specify a valid topic, e.g., technews gadgets*`);
+  const allowedTopics = ['gadgets','technology','laptops','reviews','science','gallery','videos','mobiles','techook'];
+
+  if (!topic || !allowedTopics.includes(topic)) {
+    return await message.reply(
+      `💡 *Valid Tech Topics:* \n🧠 technology, 💻 gadgets, 📱 mobiles,\n📸 gallery, 📹 videos, 💬 reviews, 🔬 science\n\n✨ _Example:_ *.technews gadgets*`
+    );
   }
+
+  const result = await techNews.news(topic);
+  const newsArray = result[topic];
+
+  return await sendNews(message, newsArray, topic, "📰");
+});
+
+// 🌍 WORLDNEWS
+System({
+  pattern: 'worldnews',
+  fromMe: isPrivate,
+  desc: '🌍 Global Headlines',
+  type: 'news',
+}, async (message) => {
+  const res = await getJson(`${NEWS_API}top`);
+  return await sendNews(message, res.results, "World", "🌍");
+});
+
+// ⚽ SPORTSNEWS
+System({
+  pattern: 'sportsnews',
+  fromMe: isPrivate,
+  desc: '⚽ Sports Breaking News',
+  type: 'news',
+}, async (message) => {
+  const res = await getJson(`${NEWS_API}sports`);
+  return await sendNews(message, res.results, "Sports", "⚽");
+});
+
+// 🏛️ POLITICSNEWS
+System({
+  pattern: 'politicsnews',
+  fromMe: isPrivate,
+  desc: '🏛️ Politics Headlines',
+  type: 'news',
+}, async (message) => {
+  const res = await getJson(`${NEWS_API}politics`);
+  return await sendNews(message, res.results, "Politics", "🏛️");
 });
