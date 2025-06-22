@@ -1,12 +1,16 @@
-const { Client } = require("whatsapp-web.js");
-const qrcode = require("qrcode-terminal");
-
-const client = new Client();
-
-client.on("qr", qr => qrcode.generate(qr, { small: true }));
-
-client.on("ready", () => {
-  console.log("💼 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 Bot is alive!");
-});
-
-client.initialize();
+{
+  "name": "THE-LEGENDARY-N1L-BOT",
+  "version": "1.0.0",
+  "description": "Legendary WhatsApp Bot created by 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 👑",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋",
+  "license": "MIT",
+  "dependencies": {
+    "whatsapp-web.js": "^1.21.1",
+    "qrcode-terminal": "^0.12.0",
+    "yargs": "^17.7.2"
+  }
+}
