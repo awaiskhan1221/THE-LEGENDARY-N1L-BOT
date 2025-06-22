@@ -2,7 +2,7 @@
 
 const plugins = require("../lib/system");
 const { System, isPrivate, isUrl, config } = require("../lib");
-const { BOT_INFO, MEDIA_DATA, MENU_FONT } = require("../config");
+const { BOT_INFO, MENU_FONT } = require("../config");
 const { uptime } = require("os");
 const { version } = require('../package.json');
 const fancy = require('./client/fancy');
@@ -14,21 +14,17 @@ const clockString = (ms) => {
   return `${h}:${m}:${s}`;
 };
 
-async function readMore() {
-  return String.fromCharCode(8206).repeat(4001);
-}
-
 System({
   pattern: 'menu ?(.*)',
   fromMe: isPrivate,
-  desc: 'Flirty command menu',
+  desc: '𝚴𝚯𝚻 Romantic Command Menu',
   type: 'romantic',
   dontAddCommandList: true,
 }, async (message, match) => {
   const [date, time] = new Date().toLocaleString("en-IN", { timeZone: config.TIMEZONE }).split(",");
   const ownerName = BOT_INFO.split(';')[1];
   const botName = BOT_INFO.split(';')[0];
-  const image = BOT_INFO.split(';')[2];
+  const customImage = "https://i.postimg.cc/RFddD6vj/93f52fb3-70a2-4d6b-b487-c3f3519b679b.jpg";
 
   let menu = `╭─╮ ♡╭──⌛ *𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 𝐌𝐄𝐍𝐔* ⌛──╮♡╭─╮
 │
@@ -63,7 +59,6 @@ System({
   for (const cmmd of category.sort()) {
     let typ = typFont ? await fancy.apply(fancy[parseInt(typFont) - 1], cmmd) : cmmd;
     menu += `\n\n💎 *${typ}*\n`;
-
     for (const { cmd, type } of cmnd.filter(({ type }) => type === cmmd)) {
       let ptrn = ptrnFont ? await fancy.apply(fancy[parseInt(ptrnFont) - 1], cmd.trim()) : cmd;
       menu += `➥ ${ptrn}\n`;
@@ -72,12 +67,52 @@ System({
 
   menu += `\n🍷 *Designed & Delivered by* ✨ 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 👑`;
 
-  let options = image.includes('&gif')
-    ? { gifPlayback: true, caption: menu }
-    : { caption: menu };
+  return await message.send({ url: customImage }, { caption: menu }, "image");
+});
 
-  const url = image.replace(/&gif/g, '');
+// Extra Touch — Add logo, theme, intro (optional but built-in)
 
-  if (isUrl(url)) return await message.sendFromUrl(url, options);
-  return await message.send(menu);
+System({
+  pattern: "logo",
+  fromMe: isPrivate,
+  desc: "Show your custom logo",
+  type: "branding"
+}, async (message) => {
+  const logoUrl = "https://i.postimg.cc/RFddD6vj/93f52fb3-70a2-4d6b-b487-c3f3519b679b.jpg";
+  await message.send({ url: logoUrl }, { caption: "✨ *𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 Official Logo* 👑" }, "image");
+});
+
+System({
+  pattern: "theme",
+  fromMe: isPrivate,
+  desc: "Show your bot's vibe",
+  type: "branding"
+}, async (message) => {
+  const themeText = `💫 *𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 Visual Identity* 💼
+
+🎨 Theme: Royal Black × Electric Purple  
+📸 Aesthetic: Clean, minimal, branded  
+🧠 Vibe: Smart, flirty, powerful  
+💼 Brand Line: "𝚴𝚯𝚻 isn’t just code, it’s class."`;
+  await message.send(themeText);
+});
+
+System({
+  pattern: "intro",
+  fromMe: isPrivate,
+  desc: "Bot intro for branding",
+  type: "branding"
+}, async (message) => {
+  const introText = `┏━══━━┓
+┃  🔥 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 ⚡  
+┣━══━━┛
+┃ 💼 Brand: Beast-Class Bot
+┃ 🤖 Power: 40+ Flex Commands
+┃ ✨ Owner: You, the legend
+┗━━━━━━━━┛
+
+🖤 _Your files whisper my name. I obey with style._  
+_Type .menu and let’s conquer._`;
+
+  await message.send(introText);
 });
