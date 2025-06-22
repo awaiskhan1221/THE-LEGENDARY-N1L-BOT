@@ -1,55 +1,70 @@
+/*───────────────────────────────────────────────╮
+  🔰 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 👑 — Schedule Module » schedule.js
+  🔞 Stylish Scheduling | Romantic Reminder Magic ✨
+╰───────────────────────────────────────────────*/
+
 const { System, setSchedule, getSchedule, delSchedule, bot } = require('../lib/');
-const { parsedJid, formatDateTime, reformatDateTime } = require("./client/"); 
+const { parsedJid, formatDateTime, reformatDateTime } = require('./client/');
 
-
-System({ 
-    pattern: "setschedule", 
-    fromMe: true, 
-    desc: 'To set Schedule Message',
-    type: 'schedule'
+// 🕰️ Set a schedule to deliver messages later
+System({
+    pattern: "setschedule",
+    fromMe: true,
+    desc: "💌 Set a scheduled message",
+    type: "schedule"
 }, async (message, match) => {
-    if (!message.quoted) return await message.send('*Reply to a Message, which is scheduled to send*');
-    if (!match.includes(',')) return message.reply("-> *Example :*\n*setschedule jid, HH:MM AM/PM (time) DAY-MONTH-YEAR*\n-> *Example :.setschedule xxx@s.whatsapp.net,10:30 PM 19-11-2024*");    
-    const [id, time] = match.split(',')
+    if (!message.quoted) return await message.send('*🫧 Reply to a message you want to schedule.*');
+    if (!match.includes(',')) return message.reply(`✨ 𝑬𝒙𝒂𝒎𝒑𝒍𝒆:\n.setschedule 9234xxxxxxx@s.whatsapp.net, 10:00 PM 22-06-2025`);
+
+    const [id, time] = match.split(',');
     const [jid] = await parsedJid(id);
-    const newFormat = formatDateTime(time.trim());
-    if (!jid || !newFormat) return message.reply("-> *Example :*\n*setschedule jid, HH:MM AM/PM (time) DAY-MONTH-YEAR*\n-> *Example :.setschedule xxx@s.whatsapp.net,10:30 PM 19-11-2024*"); 
-    await setSchedule(jid, newFormat, "true", message.reply_message.message);
-    await message.send(`_successfully scheduled to send at ${time}_`);
+    const formatted = formatDateTime(time.trim());
+
+    if (!jid || !formatted) return message.reply(`💫 𝑬𝒙𝒂𝒎𝒑𝒍𝒆:\n.setschedule 9234xxxxxxx@s.whatsapp.net, 10:00 PM 22-06-2025`);
+
+    await setSchedule(jid, formatted, "true", message.reply_message.message);
+    await message.send(`✅ *Scheduled Successfully!*\n\n📤 Will deliver at *${time.trim()}*`);
     bot.restart();
 });
 
+// 📜 View all scheduled messages
 System({
-  pattern: "getschedule",
-  fromMe: true,
-  desc: 'To get all Schedule Messages',
-  type: 'schedule',
+    pattern: "getschedule",
+    fromMe: true,
+    desc: "📋 View scheduled messages",
+    type: "schedule"
 }, async (message) => {
-  const { data } = await getSchedule();
-  if (data.length === 0) return await message.reply("_No Schedule Message Found_");  
-  const responseText = `*Schedule Message List*\n\n${(await Promise.all(data.map(async (item) => {
-        const date = reformatDateTime(item.date) || "Invalid Date";
-        const contentType = Object.keys(item.content || {})[0] || 'unknown';
-        return `*Jid:* ${item.jid}\n*Date:* ${date}\n*Message Type:* ${contentType}`;
-  }))).join("\n\n")}`;
-  await message.reply(responseText);
+    const { data } = await getSchedule();
+    if (data.length === 0) return await message.reply("💔 No schedules found.");
+
+    const fancyList = (await Promise.all(data.map(async (item) => {
+        const date = reformatDateTime(item.date) || "Unknown Date";
+        const contentType = Object.keys(item.content || {})[0] || 'Text';
+        return `📌 *To:* ${item.jid}\n📅 *Date:* ${date}\n💬 *Message Type:* ${contentType}`;
+    }))).join("\n\n");
+
+    await message.reply(`🌟 *Scheduled Messages List*\n\n${fancyList}`);
 });
 
-
-System({ 
-    pattern: "delschedule", 
-    fromMe: true, 
-    desc: 'To delete Schedule Message',
-    type: 'schedule'
+// 🗑️ Delete a scheduled message
+System({
+    pattern: "delschedule",
+    fromMe: true,
+    desc: "❌ Delete a scheduled message",
+    type: "schedule"
 }, async (message, match) => {
-    if (!match) return message.reply("-> *Example : delschedule jid, HH:MM AM/PM (time) DAY-MONTH-YEAR*\n->*.delschedule xxx@s.whatsapp.net,10:30 PM 19-11-2024*"); 
-    if (!match.includes(',')) return message.reply("-> *Example : delschedule jid, HH:MM AM/PM (time) DAY-MONTH-YEAR*\n->*.delschedule xxx@s.whatsapp.net,10:30 PM 19-11-2024*");    
-    const [id, time] = match.split(',')
+    if (!match || !match.includes(',')) {
+        return message.reply(`💡 𝑬𝒙𝒂𝒎𝒑𝒍𝒆:\n.delschedule 9234xxxxxxx@s.whatsapp.net, 10:00 PM 22-06-2025`);
+    }
+
+    const [id, time] = match.split(',');
     const [jid] = await parsedJid(id);
-    const newFormat = formatDateTime(time.trim());
-    if (!jid || !newFormat) return message.reply("-> *Example : delschedule jid, HH:MM AM/PM (time) DAY-MONTH-YEAR*\n->*.delschedule xxx@s.whatsapp.net,10:30 PM 19-11-2024*");
-    const schedule = await delSchedule(jid, newFormat);
-    if(!schedule.status) return await message.send('_Schedule not found_');
-    return await message.send('_Schedule deleted_');
+    const formatted = formatDateTime(time.trim());
+
+    if (!jid || !formatted) return message.reply(`⚠️ Incorrect format. Please follow example:\n.delschedule 9234xxxxxxx@s.whatsapp.net, 10:00 PM 22-06-2025`);
+
+    const result = await delSchedule(jid, formatted);
+    if (!result.status) return await message.send('❌ No such schedule found.');
+    await message.send('✅ Schedule deleted successfully.');
     bot.restart();
 });
