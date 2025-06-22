@@ -1,3 +1,6 @@
-git add heroku.yml
-git commit -m "Fix: heroku.yml corrected for Docker deploy"
-git push
+build:
+  docker:
+    web: Dockerfile
+
+run:
+  web: npm start
