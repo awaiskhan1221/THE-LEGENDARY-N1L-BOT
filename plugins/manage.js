@@ -1,331 +1,207 @@
-/*------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-Copyright (C) 2023 Loki - Xer.
-Licensed under the  GPL-3.0 License;
-you may not use this file except in compliance with the License.
-Jarvis - Loki-Xer 
-
-
-------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
+/*═════════════════════════════════════════════
+🔥 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 👑 — manage.js v2
+🔐 Ultimate Group Protection & Greetings
+═════════════════════════════════════════════*/
 
 const {
-    System,
-    setData,
-    getData,
-    transformData,
-    makeInDb
+  System, setData, getData, transformData, makeInDb
 } = require('../lib');
 const { parsedJid, isAdmin } = require("./client/");
-const actions = ['kick','warn','null']
+const moment = require('moment-timezone');
 
+const actions = ['kick','warn','null'];
+const brand = msg => `_*𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 👑*_ ${msg}`;
 
-System({
-    pattern: 'antiword ?(.*)',
-    type: "manage",
-    fromMe: true,
-    onlyGroup: true,
-    adminAccess: true,
-    desc: 'remove users who use restricted words'
-}, async (message, match) => {
-    if (!match) return await message.reply("_*antiword* on/off_\n_*antiword* action warn/kick/null_");
-    const antiword = await transformData(message.jid, "antiword")
-    if(match.toLowerCase() == 'get') {
-    	const status = antiword && antiword.status == 'true' ? true : false
-        if(!status  || !antiword.value) return await message.send('_Not Found_');
-        return await message.send(`_*activated antiwords*: ${antiword.value}_`);
-    } else if(match.toLowerCase() == 'on') {
-    	const action = antiword && antiword.action ? antiword.action : 'null';
-        const word = antiword && antiword.value ? antiword.value : undefined;
-        await makeInDb(message.jid, { status: "true", action: action, value: word }, "antiword");
-        return await message.send(`_antiword Activated with action null_\n_*antiword action* warn/kick/null for chaning actions_`)
-    } else if(match.toLowerCase() == 'off') {
-    	const action = antiword && antiword.action ? antiword.action : 'null';
-        const word = antiword && antiword.value ? antiword.value : undefined;
-        await makeInDb(message.jid, { status: "false", action: action, value: word }, "antiword");
-        return await message.send(`_antiword deactivated_`)
-    } else if(match.toLowerCase().match('action')) {
-    	const status = antiword && antiword.status ? antiword.status : 'false';
-	const word = antiword && antiword.value ? antiword.value : undefined;
-        match = match.replace(/action/gi,'').trim();
-        if(!actions.includes(match)) return await message.send('_action must be warn,kick or null_')
-        await makeInDb(message.jid, { status: status, action: match, value: word }, "antiword");
-        return await message.send(`_antiword Action Updated_`);
-    } else {
-    	if(!match) return await message.send('_*Example:* antiword 🏳️‍🌈, gay, nigga_');
-    	const status = antiword && antiword.status ? antiword.status : 'false';
-        const action = antiword && antiword.action ? antiword.action : 'null';
-        await makeInDb(message.jid, { status: status, action: action, value: match }, "antiword");
-        return await message.send(`_Antiwords Updated_`);
+// 1️⃣ Anti Tools
+async function handleToggle(msg, key, input, opts = {}) {
+  const data = await transformData(msg.jid, key);
+  const cmd = input.trim().toLowerCase();
+
+  if (!cmd) {
+    throw `Usage: .${key} <on/off/get/action/keywords>`;
+  }
+  if (cmd === 'on' || cmd === 'off') {
+    await makeInDb(msg.jid, { status: cmd === 'on' ? 'true' : 'false', action: data?.action ?? 'null', value: data?.value ?? '' }, key);
+    return brand(`${key} ${cmd === 'on'? 'Activated ✅' : 'Deactivated ❌'}`);
+  }
+  if (cmd === 'get') {
+    if (!data?.value) return brand(`No ${key} data set.`);
+    return brand(`${key.toUpperCase()}: ${data.value}`);
+  }
+  if (cmd.startsWith('action')) {
+    const act = cmd.split(' ')[1];
+    if (!actions.includes(act)) throw `Invalid action. Allowed: ${actions.join(', ')}`;
+    await makeInDb(msg.jid, { status: data?.status ?? 'true', action: act, value: data?.value ?? '' }, key);
+    return brand(`${key} Action set to ${act}`);
+  }
+  // keywords/values
+  await makeInDb(msg.jid, { status: data?.status ?? 'true', action: data?.action ?? 'null', value: input }, key);
+  return brand(`${key} value updated.`);
+}
+
+['antiword','antilink','antibot'].forEach(key => {
+  System({
+    pattern: `${key} ?(.*)`,
+    fromMe: true, type: 'manage', onlyGroup: true, adminAccess: true,
+    desc: `Configure ${key}`
+  }, async (msg, match) => {
+    try {
+      const res = await handleToggle(msg, key, match || '');
+      await msg.send(res);
+    } catch (err) {
+      await msg.reply(`⚠️ ${err}`);
     }
+  });
 });
 
 System({
-    pattern: 'antilink ?(.*)',
-    type: "manage",
-    fromMe: true,
-    onlyGroup: true,
-    adminAccess: true,
-    desc: 'remove users who use bot'
-}, async (message, match) => {
-    if (!match) return await message.reply(`_*antilink* on/off/get_\n_*antilink* action warn/kick/null_\n_*antilink:* null/whatsapp.com_`);
-    const antilink = await transformData(message.jid, "antilink");
-    if(match.toLowerCase() === 'on') {
-    	const action = antilink && antilink.action ? antilink.action : 'null';
-        const value = antilink && antilink.allowedUrls ? antilink.allowedUrls : 'null';
-        await makeInDb(message.jid, { status: "true", action, value }, "antilink");
-        return await message.send(`_antilink Activated with action null_\n_*antilink action* warn/kick/null for chaning actions_`)
-    } else if(match.toLowerCase() === 'off') {
-    	const action = antilink && antilink.action ? antilink.action : 'null';
-        const value = antilink && antilink.allowedUrls ? antilink.allowedUrls : 'null';
-        await makeInDb(message.jid, { status: "false", action, value }, "antilink");
-        return await message.send(`_antilink deactivated_`)
-    } else if(match.toLowerCase() === 'get') {
-	const allowedUrls = antilink && antilink.allowedUrls ? antilink.allowedUrls : 'null';
-        const withExclamation = allowedUrls.split(',').filter(item => item.startsWith('!')).join(',');
-        const withoutExclamation = allowedUrls.split(',').filter(item => !item.startsWith('!')).join(',');
-        const text = [withExclamation && `_Not Allowed URL: ${withExclamation}_`, withoutExclamation && `_Allowed urls: ${withoutExclamation}_`].filter(Boolean).join('\n');
-        return message.send(`_Antlink_\n\n_Status : ${antilink.enabled}_\n_Action: ${antilink.action}_\n` + text);
-    } else if(match.toLowerCase().match('action')) {
-    	const status = antilink && antilink.enabled ? antilink.enabled : 'true';
-        match = match.replace(/action/gi,'').trim();
-        if(!actions.includes(match)) return await message.send('_action must be warn,kick or null_')
-        const value = antilink && antilink.allowedUrls ? antilink.allowedUrls : 'null';
-        await makeInDb(message.jid, { status, action: match, value }, "antilink");
-        return await message.send(`_Antilink Action Updated_`);
-    } else {
-    	const action = antilink && antilink.action ? antilink.action : 'null';
-    	const status = antilink && antilink.enabled ? antilink.enabled : 'true';
-        await makeInDb(message.jid, { status, action, value: match }, "antilink");
-	const withExclamation = match.split(',').filter(item => item.startsWith('!')).join(',');
-        const withoutExclamation = match.split(',').filter(item => !item.startsWith('!')).join(',');
-        return await message.send([withExclamation && `_Antilink Not Allowed URL updated: ${withExclamation}_`, withoutExclamation && `_Antilink allowed urls Updated to: ${withoutExclamation}_`].filter(Boolean).join('\n'));
-    };
+  pattern: 'antifake ?(.*)',
+  fromMe: true, type: 'manage', onlyGroup: true, adminAccess: true,
+  desc: '🚫 Restrict fake number prefixes'
+}, async (msg, match) => {
+  const data = await getData(msg.jid);
+  const cmd = match.trim().toLowerCase();
+  if (!cmd) return msg.reply('Usage: .antifake on/off/get or list prefixes');
+  if (['on','off'].includes(cmd)) {
+    await setData(msg.jid, data?.antifake?.message ?? '', cmd === 'on'? 'true':'false', 'antifake');
+    return msg.send(brand(`Antifake ${cmd === 'on'? 'activated':'deactivated'}`));
+  }
+  if (cmd === 'get') {
+    return data?.antifake?.message
+      ? msg.send(brand(`Restricted prefixes: ${data.antifake.message}`))
+      : msg.send(brand('No prefixes set.'));
+  }
+  const prefixes = cmd.replace(/[^0-9,]/g,'');
+  await setData(msg.jid, prefixes, data?.antifake?.status ?? 'true', 'antifake');
+  return msg.send(brand(`Antifake prefixes updated.`));
+});
+
+// 2️⃣ Anti Admin Abuse
+['antidemote','antipromote'].forEach(key => {
+  System({
+    pattern: `${key} ?(.*)`,
+    fromMe: true, type: 'manage', onlyGroup: true, adminAccess: true,
+    desc: `Enable/disable ${key}`
+  }, async (msg, match) => {
+    if (!match) return msg.send({
+      values: [{displayText:'on',id:`${key} on`},{displayText:'off',id:`${key} off`}],
+      withPrefix:true, onlyOnce:true, participates:[msg.sender]
+    }, 'poll');
+    const cmd = match.trim().toLowerCase();
+    if (!['on','off'].includes(cmd)) return msg.reply(`Usage: .${key} on/off`);
+    await setData(msg.jid, 'active', cmd==='on'?'true':'false', key);
+    return msg.send(brand(`${key} ${cmd==='on'? 'activated':'deactivated'}`));
+  });
 });
 
 System({
-    pattern: 'antifake ?(.*)',
-    fromMe: true,
-    type: 'manage',
-    onlyGroup: true,
-    adminAccess: true,
-    desc: 'remove fake numbers'
-}, async (message, match) => {
-    if (!match) return await message.reply('_*antifake* 94,92_\n_*antifake* on/off_\n_*antifake* list_');
-    const { antifake } = await getData(message.chat);
-    if(match.toLowerCase()==='get'){
-    if(!antifake || antifake.status === 'false' || !antifake.message) return await message.send('_Not Found_');
-    return await message.send(`_*activated restricted numbers*: ${antifake.message}_`);
-    } else if(match.toLowerCase() === 'on') {
-    	const data = antifake && antifake.message ? antifake.message : '';
-    	await setData(message.jid, data, "true", "antifake");
-        return await message.send(`_Antifake Activated_`)
-    } else if(match.toLowerCase() === 'off') {
-        const data = antifake && antifake.message ? antifake.message : '';
-    	await setData(message.jid, data, "false", "antifake");
-    return await message.send(`_Antifake Deactivated_`)
+  pattern: 'antidelete ?(.*)',
+  fromMe: true, type: 'manage', onlyGroup: false, adminAccess: false,
+  desc: 'Prevent message deletions'
+}, async (msg, match) => {
+  const uid = msg.user.jid;
+  const data = await getData(uid);
+  if (!match) return msg.reply(`Usage:\n.antidelete on/off/\n.antidelete jid/chat/pm`);
+  const parts = match.split(' ');
+  const cmd=parts[0], dest=parts[1] || 'chat';
+  if (!['on','off'].includes(cmd) || !['id','chat','pm','jid'].includes(dest)) return msg.reply(`Invalid usage`);
+  await setData(uid, dest, cmd==='on'?'true':'false','antidelete');
+  return msg.send(brand(`Antidelete ${cmd==='on'? 'enabled':'disabled'} => ${dest}`));
+});
+
+// 3️⃣ Group Protection
+['pdm','gcaccess'].forEach(key => {
+  System({
+    pattern: `${key} ?(.*)`,
+    fromMe: true, type: 'manage', onlyGroup: true, adminAccess: true,
+    desc: `Toggle ${key}`
+  }, async (msg, match) => {
+    if (!match) {
+      return msg.send({
+        values:[{displayText:'on',id:`${key} on`},{displayText:'off',id:`${key} off`}],
+        withPrefix:true, onlyOnce:true, participates:[msg.sender]
+      }, 'poll');
     }
-    match = match.replace(/[^0-9,!]/g, '');
-    if(!match) return await message.send('value must be number');
-    const status = antifake && antifake.status ? antifake.status : 'true';
-    await setData(message.jid, match, status, "antifake");
-    return await message.send(`_Antifake Updated_`);
+    const cmd = match.trim().toLowerCase();
+    if (!['on','off'].includes(cmd)) return msg.reply(`Usage: .${key} on/off`);
+    await setData(msg.jid, 'active', cmd==='on'?'true':'false', key);
+    return msg.send(brand(`${key} ${cmd==='on'? 'activated':'deactivated'}`));
+  });
+});
+
+// 4️⃣ Greetings
+['welcome','goodbye'].forEach(key => {
+  System({
+    pattern: `${key} ?(.*)`,
+    type: 'greetings', fromMe: true, onlyGroup: true, adminAccess: true,
+    desc: `Set ${key} message`
+  }, async (msg, match) => {
+    const data = await getData(msg.jid);
+    const cmd = match.trim();
+    if (cmd.toLowerCase() === 'get') {
+      const cur = data[key]?.message;
+      return msg.send(cur? brand(`${key} msg: ${cur}`) : brand(`No ${key} set`));
+    }
+    if (['on','off'].includes(cmd.toLowerCase())) {
+      const val = data[key]?.message ?? '';
+      await setData(msg.jid, val, cmd==='on'?'true':'false', key);
+      return msg.send(brand(`${key} ${cmd==='on'? 'activated':'deactivated'}`));
+    }
+    await setData(msg.jid, cmd, data[key]?.status ?? 'true', key);
+    return msg.send(brand(`${key} message set.`));
+  });
+});
+
+// 5️⃣ Auto Tasks
+['automute','autounmute'].forEach(key => {
+  System({
+    pattern: `${key} ?(.*)`,
+    type: 'manage', fromMe: true, onlyGroup: true, adminAccess: true,
+    desc: `Schedule ${key}`
+  }, async (msg, match) => {
+    const data = await getData(msg.jid);
+    const time = match?.trim().toUpperCase();
+    if (!time) {
+      return msg.reply(`Usage: .${key} HH:MM AM/PM or .${key} on/off`);
+    }
+    if (time==='ON' || time==='OFF') {
+      await setData(msg.jid, data[key]?.message ?? '', time === 'ON'?'true':'false', key);
+      return msg.send(brand(`${key} ${time==='ON'? 'enabled':'disabled'}`));
+    }
+    if (!/^(\d{1,2}:\d{2})\s?(AM|PM)$/i.test(time)) {
+      return msg.send("Invalid time format. Use 12-hr format: 05:30 PM");
+    }
+    await setData(msg.jid, time, 'true', key);
+    return msg.send(brand(`${key} scheduled at ${time}`));
+  });
 });
 
 System({
-    pattern: 'antibot ?(.*)',
-    type: "manage",
-    fromMe: true,
-    onlyGroup: true,
-    adminAccess: true,
-    desc: 'remove users who use bot'
-}, async (message, match) => {
-    if (!match) return await message.reply("_*antibot* on/off_\n_*antibot* action warn/kick/null_");
-    const { antibot } = await getData(message.chat)
-    if(match.toLowerCase() === 'on') {
-    	const action = antibot && antibot.message ? antibot.message : 'null';
-        await setData(message.jid, action, "true", "antibot");
-        return await message.send(`_antibot Activated with action null_\n_*antibot action* warn/kick/null for chaning actions_`)
-    } else if(match.toLowerCase() === 'off') {
-    	const action = antibot && antibot.message ? antibot.message : 'null';
-        await setData(message.jid, action, "false", "antibot");
-        return await message.send(`_antibot deactivated_`)
-    } else if(match.toLowerCase().match('action')) {
-    	const status = antibot && antibot.status ? antibot.status : 'true';
-        match = match.replace(/action/gi,'').trim();
-        if(!actions.includes(match)) return await message.send('_action must be warn,kick or null_')
-        await setData(message.jid, match, status, "antibot");
-        return await message.send(`_AntiBot Action Updated_`);
-    }
+  pattern: "getmute ?(.*)",
+  fromMe: true, onlyGroup: true, adminAccess: true, type: 'manage',
+  desc: "Get auto mute/unmute settings"
+}, async (msg) => {
+  const data = await getData(msg.jid);
+  const ms = [];
+  if (data.automute?.status === 'true') ms.push(`🔇 auto mute at ${data.automute.message}`);
+  if (data.autounmute?.status === 'true') ms.push(`🔊 auto unmute at ${data.autounmute.message}`);
+  if (!ms.length) return msg.send(brand("No auto-schedule set"));
+  return msg.send(brand(ms.join('\n')));
 });
 
+// 6️⃣ Final Info
 System({
-    pattern: 'antidemote ?(.*)',
-    type: 'manage',
-    fromMe: true,
-    onlyGroup: true,
-    adminAccess: true,
-    desc: 'demote actor and re-promote demoted person'
-}, async (message, match) => {
-    if (!match) return await message.send("Choose settings to change antidemote settings", { values: [{ displayText: "on", id: "antidemote on"}, { displayText: "off", id: "antidemote off"}], onlyOnce: true, withPrefix: true, participates: [message.sender] }, "poll");
-    if (match != 'on' && match != 'off') return message.reply('_antidemote on_');
-    const { antidemote } = await getData(message.jid);
-    if (match === 'on') {
-        if (antidemote && antidemote.status == 'true') return message.reply('_Already activated_');
-        await setData(message.jid, "active", "true", "antidemote");
-        return await message.reply('_activated_');
-    } else if (match === 'off') {
-        if (antidemote && antidemote.status == 'false') return message.reply('_Already Deactivated_');
-        await setData(message.jid, "disactive", "false", "antidemote");
-        return await message.reply('_deactivated_')
-    }
-});
-
-System({
-    pattern: 'antipromote ?(.*)',
-    type: 'manage',
-    fromMe: true,
-    onlyGroup: true,
-    adminAccess: true,
-    desc: 'demote actor and re-promote demoted person'
-}, async (message, match) => {
-    if(!message.isGroup) return;
-    if (!match) return await message.send("Choose settings to change antipromote settings", { values: [{ displayText: "on", id: "antipromote on"}, { displayText: "off", id: "antipromote off"}], onlyOnce: true, withPrefix: true, participates: [message.sender] }, "poll");
-    if (match != 'on' && match != 'off') return message.reply('antipromote on');
-    const { antipromote } = await getData(message.chat);
-    if (match === 'on') {
-        if (antipromote && antipromote.status == 'true') return message.reply('_Already activated_');
-        await setData(message.jid, "active", "true", "antipromote");
-        return await message.reply('_activated_')
-    } else if (match === 'off') {
-        if (antipromote && antipromote.status == 'false') return message.reply('_Already Deactivated_');
-        await setData(message.jid, "disactive", "false", "antipromote");
-        return await message.reply('_deactivated_')
-    }
-});
-
-System({
-    pattern: "antidelete",
-    fromMe: true,
-    type: "manage",
-    desc: "Manage anti-delete settings",
-}, async (message, match) => {
-    if(!match) return await message.reply("*Example:*\n\n_*antidelete on/off*_\n_*antidelete jid/chat/pm*_\n");
-    const { antidelete } = await getData(message.user.id);
-    if (match === "off") {
-         const jid = antidelete && antidelete.message ? antidelete.message : "chat";
-        await setData(message.user.id, jid, "false", "antidelete");
-        await message.reply("_*antidelete disabled*_");
-    } else if (match === "on") {
-        const jid = antidelete && antidelete.message ? antidelete.message : "chat";
-        await setData(message.user.id, jid, "true", "antidelete");
-        await message.reply("_*antidelete enabled*_");
-    } else {
-        const [jid] = await parsedJid(match);
-        if (!jid && match !== "chat" && match !== "pm") return await message.reply("*Example:*\n\n_*antidelete on/off*_\n_*antidelete jid/chat/pm*_");
-        const status = antidelete?.status || "false";
-        await setData(message.user.id, jid || match, status, "antidelete");
-        await message.reply(`_*antidelete set to ${jid || match}*_`);
-    }
-});
-
-
-System({
-    pattern: 'welcome ?(.*)',
-    type: 'greetings',
-    fromMe: true,
-    onlyGroup: true,
-    adminAccess: true,
-    desc: 'set welcome message'
-}, async (message, match) => {
-    const { welcome } = await getData(message.from);
-    if (match.toLowerCase() === 'get') {
-        if (!welcome && !welcome.message) return await message.send('*_Not Set Yet_*');
-        return await message.send(welcome.message);
-    } else if (match.toLowerCase() === 'off') {
-        const status = welcome && welcome.status ? welcome.status : 'false';
-        if (status === 'false') return await message.send(`_already deactivated_`);
-        await setData(message.jid, welcome.message, 'false', 'welcome');
-        return await message.send('*successfully deactivated*');
-    } else if (match.toLowerCase() === 'on') {
-        const status = welcome && welcome.status ? welcome.status : 'false';
-        if (status === 'true') return await message.send(`_already activated_`);
-        await setData(message.jid, welcome.message, 'true', 'welcome');
-        return await message.send('*successfully activated*');
-    } else if (match) {
-        const status = welcome && welcome.status ? welcome.status : 'true';
-        await setData(message.jid, match, status, 'welcome');
-        return await message.send('*successfully set*');
-    }
-    return await message.reply('_*welcome get*_\n_*welcome* thank you for joining &mention_\n*_welcome false_*');
-});
-
-System({
-    pattern: 'goodbye ?(.*)',
-    type: 'greetings',
-    fromMe: true,
-    onlyGroup: true,
-    adminAccess: true,
-    desc: 'set goodbye message'
-}, async (message, match) => {
-    const { exit } = await getData(message.jid);
-    if (match.toLowerCase() === 'get') {
-        if (!exit && !exit.message) return await message.send('*_Not Set Yet_*');
-        return await message.send(exit.message);
-    } else if (match.toLowerCase() === 'off') {
-        const status = exit && exit.status ? exit.status : 'false';
-        if (status === 'false') return await message.send(`_already deactivated_`);
-        await setData(message.jid, exit.message, 'false', 'exit');
-        return await message.send('*successfully deactivated*');
-    } else if (match.toLowerCase() === 'on') {
-        const status = exit && exit.status ? exit.status : 'false';
-        if (status === 'true') return await message.send(`_already activated_`);
-        await setData(message.jid, exit.message, 'true', 'exit');
-        return await message.send('*successfully activated*');
-    } else if (match) {
-        const status = exit && exit.status ? exit.status : 'true';
-        await setData(message.jid, match, status, 'exit');
-        return await message.send('*successfully set*');
-    }
-    return await message.reply('_*goodbye get*_\n_*goodbye* thank you for joining &mention_\n*_goodbye false_*');
-});
-
-System({
-    pattern: "pdm",
-    fromMe: true,
-    type: "manage",
-    onlyGroup: true,
-    adminAccess: true,
-    desc: "To get info about promot and demote"
-}, async (message, match) => {
-    if (match === "on") { 
-      await setData(message.jid, "active", "true", "pdm");
-      return await message.send("_*activated*_");
-    } else if (match === "off") {
-      await setData(message.jid, "disactive", "false", "pdm");
-      return await message.send("_*deactivated*_");
-    } else {
-     await message.send("\n*Choose a setting to pdm settings*\n", { values: [ { displayText: "*on*", id: "pdm on" }, { displayText: "*off*", id: "pdm off" } ], withPrefix: true, participates: [message.sender] }, "poll");
-    }
-});
-
-System({
-    pattern: "gcaccess",
-    fromMe: true,
-    type: "manage",
-    onlyGroup: true,
-    adminAccess: true,
-    desc: "To give access to group cmds"
-}, async (message, match) => {
-    if (!await isAdmin(message, message.user.jid)) return await message.send("_I'm not an admin_");
-    if (match === "on") { 
-      await setData(message.jid, "active", "true", "adminAccess");
-      return await message.send("_*activated*_");
-    } else if (match === "off") {
-     await setData(message.jid, "disactive", "false", "adminAccess");
-     return await message.send("_*deactivated*_");
-    } else {
-     await message.send("\n*Choose a option to set admin access to this group*\n", { values: [ { displayText: "*on*", id: "gcaccess on" }, { displayText: "*off*", id: "gcaccess off" } ], withPrefix: true, participates: [message.sender] }, "poll");
-    }
+  pattern: "manageinfo",
+  fromMe: true, type: "manage", onlyGroup: false,
+  desc: "Show your settings"
+}, async (msg) => {
+  const data = await getData(msg.jid);
+  const keys = ['antiword','antilink','antibot','antifake','pdm','gcaccess','welcome','goodbye'];
+  let txt = "*✅ Current Manage Settings*\n\n";
+  keys.forEach(k => {
+    const d = data[k];
+    if (!d) return;
+    txt += `*${k}:* ${d.status || 'false'}${d.value ? ` • ${d.value}` : ''}\n`;
+  });
+  msg.send(brand(txt));
 });
