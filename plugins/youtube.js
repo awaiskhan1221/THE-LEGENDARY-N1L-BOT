@@ -1,169 +1,165 @@
-/*------------------------------------------------------------------------------------------------------------------------------------------------------
+/*───────────────────────────────────────────────
 
+💫 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 👑 YouTube Panel
+📥 Powered by: Legendary Downloader Engine
+🔞 Designed Flawlessly for Pure Elegance 🔥
 
-Copyright (C) 2023 Loki - Xer.
-Licensed under the  GPL-3.0 License;
-you may not use this file except in compliance with the License.
-Jarvis - Loki-Xer 
-
-
-------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
+───────────────────────────────────────────────*/
 
 const {
-    yts,
-    isUrl,
-    System,
-    config,
-    toAudio,
-    getBuffer,
-    isPrivate,
-    YtInfo,
-    youtube,
-    IronMan,
-    AddMp3Meta,
-    extractUrlsFromText
+  yts,
+  isUrl,
+  System,
+  config,
+  toAudio,
+  getBuffer,
+  isPrivate,
+  YtInfo,
+  youtube,
+  AddMp3Meta,
+  extractUrlsFromText
 } = require('../lib/');
 
-
+// 🔥 YOUTUBE VIDEO DOWNLOAD (.video / .ytv)
 System({
-      pattern: 'video',
-      fromMe: isPrivate,
-      desc: 'YouTube video downloader',
-      type: 'download',
+  pattern: 'video ?(.*)',
+  fromMe: isPrivate,
+  desc: 'Download YouTube video',
+  type: 'download'
 }, async (message, match) => {
-      match = match || message.reply_message.text;
-      if (!match) return await message.reply('_Give a YouTube video *Url* or *Query*_');
-     const matchUrl = (await extractUrlsFromText(match))[0];
-     if (isUrl(matchUrl)) {
-         const { title, url } = await youtube(matchUrl, "video");
-         await message.reply("_*" + "downloading " + title + "*_");
-         return await message.send({ url: url }, { caption: '*made with 🤍*', quoted: message.data }, 'video');
-      } else {
-        const { url } = (await yts(match))[0];
-        const data = await youtube(url, "video");
-        await message.reply("_*" + "downloading " + data.title + "*_"); 
-        return await message.send({ url: data.url }, { caption: '*made with 🤍*', quoted: message.data }, 'video');
-      }
+  match = match || message.reply_message.text;
+  if (!match) return message.reply('_Give a YouTube video *URL* or *Query*_');
+
+  const url = (await extractUrlsFromText(match))[0];
+  const data = isUrl(url) ? await youtube(url, "video") : await youtube((await yts(match))[0].url, "video");
+
+  await message.reply(`_🎬 Downloading: *${data.title}* 🔻_`);
+  await message.send({ url: data.url }, { caption: '🎥 *Here’s your legendary clip by 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 👑*' }, 'video');
 });
 
+// 🎧 YOUTUBE AUDIO DOWNLOAD (.yta / .song)
 System({
-    pattern: 'ytv ?(.*)',
-    fromMe: isPrivate,
-    desc: 'Download YouTube videos',
-    type: 'youtube',
+  pattern: 'yta ?(.*)',
+  fromMe: isPrivate,
+  alias: ['song'],
+  desc: 'Download YouTube audio',
+  type: 'download'
 }, async (message, match) => {
-    match = match || message.reply_message.text;
-    if (!match) return await message.reply('_Provide a YouTube video *URL* or *Query*_');
-    const urls = await extractUrlsFromText(match);
-    const matchUrl = urls && urls.length > 0 ? urls[0] : null;
-    if (isUrl(matchUrl)) {
-        const data = await youtube(matchUrl, "mp4", "all");
-        if (!data.download || data.download.length === 0) return await message.reply('No download links found.');
-        const qualities = data.download.map((item, index) => `${index + 1}. ${item.quality}`).join('\n');
-        return await message.reply(`_*${data.title}*_\n\nAvailable qualities:\n${qualities}\n\n*Reply with the number to download the video in that quality*\n✧${matchUrl}`);
-    } else {
-        const { url } = (await yts(match))[0];
-        const data = await youtube(url, "mp4", "all");
-        if (!data.download || data.download.length === 0) return await message.reply('No download links found.');
-        const qualities = data.download.map((item, index) => `${index + 1}. ${item.quality}`).join('\n');
-        return await message.reply(`_*${data.title}*_\n\nAvailable qualities:\n${qualities}\n\n*Reply with the number to download the video in that quality*\n✧${url}`);
+  match = match || message.reply_message.text;
+  if (!match) return message.reply('_Send a YouTube *URL* or *Query*_');
+
+  const url = (await extractUrlsFromText(match))[0];
+  const data = isUrl(url) ? await YtInfo(url) : await yts(match).then(r => YtInfo(r[0].url));
+  const downloadUrl = await youtube(data.url || url);
+
+  const audioBuffer = await toAudio(await getBuffer(downloadUrl.url));
+  const audio = await AddMp3Meta(audioBuffer, await getBuffer(data.thumbnail), { title: data.title, body: data.author.name || data.author });
+
+  await message.reply(`_🎧 Downloading audio: *${data.title}*_`);
+  await message.reply(audio, { mimetype: 'audio/mpeg' }, 'audio');
+});
+
+// 🎬 PLAY (.play) — User chooses audio/video
+System({
+  pattern: 'play ?(.*)',
+  fromMe: isPrivate,
+  desc: 'Play YouTube audio/video',
+  type: 'download',
+}, async (message, match) => {
+  if (!match) return message.reply('_Send any song name or YouTube URL_');
+
+  const yt = isUrl(match) ? await YtInfo((await extractUrlsFromText(match))[0]) : (await yts(match))[0];
+
+  await message.reply(
+    `🎶 *${yt.title}*\n\n🅰️ 1: Audio\n🅱️ 2: Video\n\n_Reply 1 or 2 to download_`,
+    {
+      contextInfo: {
+        externalAdReply: {
+          title: yt.author.name || yt.author,
+          body: yt.duration || yt.ago,
+          thumbnail: await getBuffer(yt.thumbnail || yt.image),
+          mediaType: 1,
+          sourceUrl: yt.url,
+          showAdAttribution: false,
+          renderLargerThumbnail: true
+        }
+      }
     }
+  );
 });
 
+// 🔍 YTS — YouTube Search (.yts)
 System({
-      pattern: 'yta ?(.*)',
-      fromMe: isPrivate,
-      type: 'download',
-      alias: ["song"],
-      desc: 'YouTube audio downloader'
+  pattern: 'yts ?(.*)',
+  fromMe: isPrivate,
+  desc: 'Search YouTube videos',
+  type: 'search',
 }, async (message, match) => {
-      match = match || message.reply_message.text;
-      if (!match) return await message.reply('_Give a YouTube video *Url* or *Query*_');
-      const matchUrl = (await extractUrlsFromText(match))[0];
-      if (isUrl(matchUrl)) {
-          const { url } = await youtube(matchUrl);
-          const { title, author, thumbnail } = await YtInfo(matchUrl);
-          await message.reply("_*" + "downloading " + title + "*_");
-          const aud = await AddMp3Meta(await toAudio(await getBuffer(url)), await getBuffer(thumbnail), { title: title, body: author });
-          await message.reply(aud, { mimetype: 'audio/mpeg' }, "audio");
-      } else {
-          const { title, author, thumbnail, url } = (await yts(match))[0];
-          await message.reply("_*" + "downloading " + title + "*_");
-          const aud = await AddMp3Meta(await toAudio(await getBuffer((await youtube(url)).url)), await getBuffer(thumbnail), { title: title, body: author.name });
-          await message.reply(aud, { mimetype: 'audio/mpeg' }, "audio");
-     }
+  if (!match) return message.reply('_Provide a keyword to search on YouTube_');
+  const results = await yts(match);
+  const list = results.map(v => `🎬 *${v.title}*\n📏 Duration: ${v.duration}\n🔗 Link: ${v.url}`).join('\n\n');
+
+  await message.reply(`_🔍 Results for:_ *${match}*\n\n${list}`);
 });
 
+// 📺 Respond to choices from .play/.yts
 System({
-    pattern: 'play ?(.*)',
-    fromMe: isPrivate,
-    desc: 'YouTube video player',
-    type: 'download',
-}, async (message, match) => {
-      if (!match) return await message.reply('_Give a *Query* to play the song or video_');
-      if (isUrl(match)) {
-          let matchUrl = (await extractUrlsFromText(match))[0];
-          const yt = await YtInfo(matchUrl);
-          return await message.reply(`*_${yt.title}_*\n\n\n\`\`\`1.⬢\`\`\` *audio*\n\`\`\`2.⬢\`\`\` *video*\n\n_*Send a number as a reply to download*_`, { contextInfo: { externalAdReply: { title: yt.author, body: yt.seconds, thumbnail: await getBuffer(yt.thumbnail), mediaType: 1, mediaUrl: yt.url, sourceUrl: yt.url, showAdAttribution: false, renderLargerThumbnail: true }}});
-      } else {
-          const yt = (await yts(match))[0];
-          return await message.reply(`*_${yt.title}_*\n\n\n\`\`\`1.⬢\`\`\` *audio*\n\`\`\`2.⬢\`\`\` *video*\n\n_*Send a number as a reply to download*_`, { contextInfo: { externalAdReply: { title: yt.author.name, body: yt.ago, thumbnail: await getBuffer(yt.image), mediaType: 1, mediaUrl: yt.url, sourceUrl: yt.url, showAdAttribution: false, renderLargerThumbnail: true }}});
-      }
-});
-  
-  System({
-    on: 'text',
-    fromMe: isPrivate,
-    dontAddCommandList: true,
-  }, async (message) => {
-    if (message.isBot || !message.quoted) return
-    if (!message.reply_message.fromMe || !message.reply_message.text) return;
-    if (!message.body.includes('⬢')) return;
-    let match = message.body.replace('⬢', '');
-    if (message.body.includes('1')) {
-      const ytAudio = (await yts(match))[0];
-      const msg = await message.send(`_*Now playing : ${ytAudio.title} 🎶*_`);
-      const data = config.AUDIO_DATA.split(';');
-      const aud = await AddMp3Meta(await toAudio(await getBuffer((await youtube(ytAudio.url)).url), 'mp3'), await getBuffer(data[2]), { title: data[0], body: data[1], });
-      await message.reply(aud, { mimetype: 'audio/mpeg', contextInfo: { externalAdReply: { title: ytAudio.author.name, body: ytAudio.ago, thumbnail: await getBuffer(ytAudio.image), mediaType: 1, mediaUrl: ytAudio.url, sourceUrl: ytAudio.url, showAdAttribution: false, renderLargerThumbnail: true } }, quoted: msg }, "audio");
-    } else if (message.body.includes('2')) {
-      const data = (await yts(match))[0];
-      const q = await message.send(`_*Now playing : ${data.title} 🎶*_`);
-      await message.send(
-        await getBuffer((await youtube(data.url, "video")).url), { caption: `_*${data.title}*_`, quoted: q }, 'video');
-    };
-  });
-  
-  System({
-       pattern: 'yts ?(.*)',
-       fromMe: isPrivate,
-       desc: "yt search",
-       type: "search",
-  }, async (message, match) => {
-      if (!match) return await message.reply('_Please provide an *Query or Url*');    
-      if (isUrl(match)) {
-        let matchUrl = (await extractUrlsFromText(match))[0];
-        const yt = await YtInfo(matchUrl);
-        await message.reply(`*_${yt.title}_*\n\n\n\`\`\`1.⬢\`\`\` *audio*\n\`\`\`2.⬢\`\`\` *video*\n\n_*Send a number as a reply to download*_`, { contextInfo: { externalAdReply: { title: yt.author, body: yt.seconds, thumbnail: await getBuffer(yt.thumbnail), mediaType: 1, mediaUrl: yt.url, sourceUrl: yt.url, showAdAttribution: false, renderLargerThumbnail: true }}});
-      } else {
-        const videos = await yts(match);
-        const result = videos.map(video => `*🏷️ Title :* _*${video.title}*_\n*📁 Duration :* _${video.duration}_\n*🔗 Link :* _${video.url}_`);
-        return await message.reply(`\n\n_*Result Of ${match} 🔍*_\n\n`+result.join('\n\n')+"\n\n*🤍 صنع بواسطة لوكي*")
-      }
-  });
+  on: 'text',
+  fromMe: isPrivate,
+  dontAddCommandList: true
+}, async (message) => {
+  if (!message.reply_message?.fromMe || !message.reply_message.text.includes('1') && !message.reply_message.text.includes('2')) return;
 
+  const choice = parseInt(message.body.trim());
+  if (![1, 2].includes(choice)) return;
+
+  const query = message.reply_message.text.match(/https?:\/\/[^\s]+/g)?.[0] || null;
+  const video = query ? await YtInfo(query) : (await yts(message.body))[0];
+
+  if (choice === 1) {
+    const audioBuffer = await toAudio(await getBuffer((await youtube(video.url)).url));
+    const mp3 = await AddMp3Meta(audioBuffer, await getBuffer(video.thumbnail || video.image), { title: video.title, body: video.author.name || video.author });
+    await message.reply(mp3, { mimetype: 'audio/mpeg' }, 'audio');
+  } else {
+    const vid = await getBuffer((await youtube(video.url, "video")).url);
+    await message.send(vid, { caption: `🎬 *${video.title}*` }, 'video');
+  }
+});
+
+// 🎯 High-Quality Video Picker (.ytv)
+System({
+  pattern: 'ytv ?(.*)',
+  fromMe: isPrivate,
+  desc: 'YouTube video download with quality list',
+  type: 'youtube'
+}, async (message, match) => {
+  match = match || message.reply_message?.text;
+  if (!match) return message.reply('_Send a YouTube video URL or query_');
+
+  const url = (await extractUrlsFromText(match))[0] || (await yts(match))[0]?.url;
+  const data = await youtube(url, 'mp4', 'all');
+
+  if (!data.download?.length) return message.reply('_No quality options found_');
+  const list = data.download.map((v, i) => `🔢 ${i + 1}. ${v.quality}`).join('\n');
+
+  await message.reply(`🎬 *${data.title}*\n\nAvailable Qualities:\n${list}\n\n_Reply with number to choose_\n✧${url}`);
+});
+
+// 🎥 Respond to .ytv choice
 System({
   on: 'text',
   fromMe: isPrivate,
   dontAddCommandList: true,
 }, async (message) => {
-  if (message.isBot || !message.quoted || !message.reply_message.fromMe || !message.reply_message.text.includes('✧')) return;
-  const match = message.reply_message.text.split('✧')[1];
-  const qualitylist = parseInt(message.body.trim());
-  var data = await youtube(match, "mp4", "all");
-  if (isNaN(qualitylist) || qualitylist < 1 || qualitylist > data.download.length) return;
-  const q = data.download[qualitylist - 1];
-  await message.reply(`_*Downloading ${data.title}*_`);
-  await message.send({ url: q.download }, { caption: `*${data.title}*\n`, footer: `*Quality: ${q.quality}*` }, "video");
+  const text = message.reply_message?.text;
+  if (!text?.includes("✧") || isNaN(message.body.trim())) return;
+
+  const url = text.split("✧")[1];
+  const num = parseInt(message.body.trim());
+  const data = await youtube(url, 'mp4', 'all');
+  const chosen = data.download[num - 1];
+
+  if (!chosen) return;
+  await message.reply(`🔻 *Downloading:* ${data.title}`);
+  await message.send({ url: chosen.download }, { caption: `🎬 *${data.title}*\n📺 Quality: ${chosen.quality}` }, 'video');
 });
