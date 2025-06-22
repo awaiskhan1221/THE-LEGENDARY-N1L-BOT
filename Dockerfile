@@ -1,19 +1,21 @@
-# 🛠️ BASE: NodeJS lightweight image
+# 🛠️ BASE: Lightweight NodeJS image
 FROM node:18
 
-# 👑 Developer: 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋
+# 👑 Developer credit
 LABEL author="𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋" \
       description="Legendary WhatsApp Bot container by 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋"
 
-# 📁 Create bot directory
+# 📁 App directory
 WORKDIR /app
 
-# 🔽 Clone bot files directly (edit this repo with yours if needed)
-RUN git clone https://github.com/YourUsername/YourRepoName.git . && \
-    yarn install --network-concurrency 1
+# 📦 Copy project files from current repo into container
+COPY . .
 
-# ✅ Optional: install tools like ffmpeg if your bot needs them
+# 📦 Install dependencies safely
+RUN yarn install --network-concurrency 1
+
+# 🎥 Optional: Install media tools for WhatsApp bots
 RUN apt-get update && apt-get install -y ffmpeg imagemagick
 
-# 🚀 Start the bot
+# 🚀 Start the bot using package.json's start script
 CMD ["npm", "start"]
