@@ -1,96 +1,105 @@
-/*------------------------------------------------------------------------------------------------------------------------------------------------------
+/*───────────────────────────────────────────────╮
+  🔌 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 👑 — Plugin Control » plugin.js
+  ✨ External Plugin Installer | Dynamic Add/Remove 💡
+╰───────────────────────────────────────────────*/
 
-
-Copyright (C) 2023 Loki - Xer.
-Licensed under the  GPL-3.0 License;
-you may not use this file except in compliance with the License.
-Jarvis - Loki-Xer 
-
-
-------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
-
-const { System, setData, pluginList, removeData, isUrl, extractUrlsFromText, getData, sleep, bot } = require("../lib/");
+const {
+  System,
+  setData,
+  pluginList,
+  removeData,
+  isUrl,
+  extractUrlsFromText,
+  getData,
+  sleep,
+  bot
+} = require("../lib/");
 const axios = require("axios");
 const util = require("util");
 const fs = require("fs");
-  
-  
+
+// 🌐 .plugin [url | list]
 System({
   pattern: "plugin",
   fromMe: true,
-  desc: "Installs External plugins",
+  desc: "🔌 Install External Plugin via URL",
   type: "support",
 }, async (message, match) => {
-  let pluginName = ""; 
-  match = match || message.reply_message.text;
-  if (!match) return await message.send("_Send a plugin url to install plugin_");
+  match = match || message.reply_message?.text;
+  if (!match) return await message.send("*💡 Send a plugin URL or use .plugin list*");
+
   if (match === "list") {
-    const data = await pluginList(); 
-    if (!data || data.length === 0) return message.send("_*No plugin installed*_");
-    data.forEach(item => {
-      pluginName += `*${item.name}:* ${item.url}\n`;
-    });
-    return message.send(pluginName);
-  } else {
-    if (isUrl(match)) {
-      const arr = await extractUrlsFromText(match);
-      for (const element of arr) {
-        try {
-          var url = new URL(element);
-        } catch (e) {
-          console.error(e);
-          return await message.send("_Invalid Url_");
-        }
-        if (url.host === "gist.github.com") {
-          url.host = "gist.githubusercontent.com";
-          url = url.toString() + "/raw";
+    const data = await pluginList();
+    if (!data || data.length === 0) return message.send("*📂 No plugin installed yet.*");
+    const plugins = data.map(p => `🔸 *${p.name}*\n🔗 ${p.url}`).join("\n\n");
+    return message.send(`*📦 Installed Plugins:*\n\n${plugins}`);
+  }
+
+  // Handle URL-based plugin installation
+  if (isUrl(match)) {
+    const urls = await extractUrlsFromText(match);
+    for (const urlText of urls) {
+      try {
+        let pluginUrl = new URL(urlText);
+        if (pluginUrl.host === "gist.github.com") {
+          pluginUrl.host = "gist.githubusercontent.com";
+          pluginUrl = pluginUrl.toString() + "/raw";
         } else {
-          url = url.toString();
+          pluginUrl = pluginUrl.toString();
         }
+
+        const { data, status } = await axios.get(pluginUrl);
+        if (status !== 200) throw new Error("Request failed");
+
+        const name = (data.match(/(?<=pattern:) ["'](.*?)["']/g) || [])
+          .map(p => p.trim().replace(/['"]/g, "").split(" ")[0])
+          .join(",") || "__plugin_" + Math.random().toString(36).substring(7);
+
+        const file = `${__dirname}/${name.split(',')[0]}.js`;
+        fs.writeFileSync(file, data);
+
         try {
-          var { data, status } = await axios.get(url);
-          if (status == 200) {
-            pluginName = (data.match(/(?<=pattern:) ["'](.*?)["']/g) || []).map(match => match.trim().split(" ")[0]).join(', ').replace(/['"]/g, '') || "__" + Math.random().toString(36).substring(8);
-            fs.writeFileSync(__dirname + "/" + pluginName.split(',')[0] + ".js", data);
-            try {
-              require("./" + pluginName.split(',')[0]);
-            } catch (e) {
-              fs.unlinkSync(__dirname + "/" + pluginName.split(',')[0] + ".js");
-              return await message.send("Invalid Plugin\n\n ```" + util.format(e) + "```");
-            }
-            await setData(pluginName.split(',')[0], url, "true", "plugin");
-            await message.send(`_*New plugin installed : ${pluginName}*_`);
-            await sleep(1500);
-          }
-        } catch (error) {
-          return await message.send("_Error occurred while installing plugin_");
+          require(`./${name.split(',')[0]}`);
+        } catch (err) {
+          fs.unlinkSync(file);
+          return await message.send("❌ Invalid Plugin\n\n```" + util.format(err) + "```");
         }
+
+        await setData(name.split(',')[0], pluginUrl, true, "plugin");
+        await message.send(`✅ *Plugin Installed:* ${name}`);
+        await sleep(1500);
+      } catch (err) {
+        return await message.send("⚠️ *Error installing plugin.*");
       }
-    } else {
-      const { plugin } = await getData(match);
-      if(!plugin) return message.reply("_*Plugin not found*_");
-      await message.reply(plugin.message);
     }
+  } else {
+    const { plugin } = await getData(match);
+    if (!plugin) return message.reply("*❌ Plugin not found.*");
+    await message.reply(plugin.message);
   }
 });
 
-
+// ❌ .remove <pluginName>
 System({
-    pattern: "remove(?: |$)(.*)",
-    fromMe: true,
-    desc: "Remove external plugins",
-    type: "support",
+  pattern: "remove(?: |$)(.*)",
+  fromMe: true,
+  desc: "🧹 Remove External Plugin",
+  type: "support"
 }, async (message, match) => {
-     if (!match) return await message.send("_*Need a plugin name to remove*_");
-       const pluginPath = __dirname + "/" + match + ".js";
-       const pluginName = await removeData(match, "plugin");
-     if (!fs.existsSync(pluginPath) && !pluginName) {
-       return await message.send("_*Plugin not found*_");
-     } else {      
-       delete require.cache[require.resolve(pluginPath)];
-       fs.unlinkSync(pluginPath);
-       await message.send(`_*Plugin ${match} deleted successfully bot is restarting*_`);
-       await bot.restart();
-    }
+  if (!match) return await message.send("*🔍 Please provide plugin name to remove.*");
+
+  const file = `${__dirname}/${match}.js`;
+  const removed = await removeData(match, "plugin");
+
+  if (!fs.existsSync(file) && !removed) {
+    return await message.send("*❌ Plugin not found.*");
+  }
+
+  try {
+    delete require.cache[require.resolve(file)];
+    fs.unlinkSync(file);
+  } catch (e) {}
+
+  await message.send(`🧹 *Plugin ${match} removed successfully!*\n\n🔁 Restarting bot...`);
+  await bot.restart();
 });
