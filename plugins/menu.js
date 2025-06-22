@@ -1,4 +1,4 @@
-// 💘 Legendary Menu Panel — Designed by 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋
+// 💘 Legendary Menu Panel — Designed by 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 👑
 
 const plugins = require("../lib/system");
 const { System, isPrivate, isUrl, config } = require("../lib");
@@ -30,20 +30,20 @@ System({
   const botName = BOT_INFO.split(';')[0];
   const image = BOT_INFO.split(';')[2];
 
-  let menu = `╭─╮ ♡╭──⌛ *𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 MENU* ⌛──╮♡╭─╮
+  let menu = `╭─╮ ♡╭──⌛ *𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 𝐌𝐄𝐍𝐔* ⌛──╮♡╭─╮
 │
-│ 🧸 *Owner:* ${ownerName}
-│ ✨ *Bot:* ${botName}
-│ ❤️ *User:* ${message.pushName.replace(/[\r\n]+/gm, "")}
-│ 🌀 *Date:* ${date}
-│ 🕒 *Time:* ${time}
+│ 👑 *Owner:* ${ownerName}
+│ 🤖 *Bot:* ${botName}
+│ 💋 *User:* ${message.pushName.replace(/[\r\n]+/gm, "")}
+│ 📆 *Date:* ${date}
+│ ⏰ *Time:* ${time}
 │ 🔋 *Uptime:* ${clockString(uptime() * 1000)}
-│ 💌 *Version:* v${version}
+│ 🛠️ *Version:* v${version}
 │
-│ 💋 *I’m here, waiting...*
-│     whisper a command... I dare you.
+│ 💖 *Hey cutie... I'm ready to obey your commands.*
+│ 💌 *Whisper my name followed by your desire...*
 │
-╰───⧪ *CMD ZONE* ⧪───╯`;
+╰───⧪ *𝐂𝐎𝐌𝐌𝐀𝐍𝐃 𝐙𝐎𝐍𝐄* ⧪───╯`;
 
   const cmnd = [];
   const category = [];
@@ -70,7 +70,7 @@ System({
     }
   }
 
-  menu += `\n💘 *Made with love by 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋* 💘`;
+  menu += `\n🍷 *Designed & Delivered by* ✨ 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 👑`;
 
   let options = image.includes('&gif')
     ? { gifPlayback: true, caption: menu }
