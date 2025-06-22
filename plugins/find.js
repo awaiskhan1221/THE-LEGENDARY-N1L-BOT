@@ -1,93 +1,78 @@
-/*------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-Copyright (C) 2023 Loki - Xer.
-Licensed under the  GPL-3.0 License;
-you may not use this file except in compliance with the License.
-Jarvis - Loki-Xer 
-
-
-------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
+/*──────────────────────────────────────────────
+ 🔍 find.js by 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋 👑 | Song Identifier | Jarvis-xer
+──────────────────────────────────────────────*/
 
 const { System, isPrivate, yts } = require('../lib');
-const { audioCut } = require("./client/"); 
+const { audioCut } = require("./client/");
 const FormData = require('form-data');
-const axios = require('axios');  
+const axios = require('axios');
 const crypto = require('crypto');
 const fs = require('fs');
 
-function buildStringToSign(
-    method,
-    uri,
-    accessKey,
-    dataType,
-    signatureVersion,
-    timestamp
-) {
-    return [method, uri, accessKey, dataType, signatureVersion, timestamp].join(
-        '\n'
-    );
+const ACR = {
+  host: 'identify-eu-west-1.acrcloud.com',
+  endpoint: '/v1/identify',
+  key: '8c21a32a02bf79a4a26cb0fa5c941e95',
+  secret: 'NRSxpk6fKwEiVdNhyx5lR0DP8LzeflYpClNg1gze'
+};
+
+function buildSignature(method, uri, key, type, version, timestamp) {
+  return [method, uri, key, type, version, timestamp].join('\n');
 }
 
-function sign(signString, accessSecret) {
-    return crypto
-        .createHmac('sha1', accessSecret)
-        .update(Buffer.from(signString, 'utf-8'))
-        .digest()
-        .toString('base64');
+function signString(stringToSign, secret) {
+  return crypto.createHmac('sha1', secret)
+    .update(Buffer.from(stringToSign, 'utf-8'))
+    .digest()
+    .toString('base64');
 }
 
 System({
-    pattern: 'find',
-    fromMe: isPrivate,
-    desc: 'Find details of a song',
-    type: 'search',
-}, async (message, match) => {
-    if (!message.quoted || (!message.reply_message.audio && !message.reply_message.video)) return await message.reply('*Reply to audio or video*');
-    const p = await message.reply_message.downloadAndSave();
-    const options = {
-       host: 'identify-eu-west-1.acrcloud.com',
-       endpoint: '/v1/identify',
-       signature_version: '1',
-       data_type: 'audio',
-       secure: true,
-       access_key: '8c21a32a02bf79a4a26cb0fa5c941e95',
-       access_secret: 'NRSxpk6fKwEiVdNhyx5lR0DP8LzeflYpClNg1gze',
-    };
-    const data = await audioCut(p, 0, 15);
-    const current_data = new Date();
-    const timestamp = current_data.getTime() / 1000;
-    const stringToSign = buildStringToSign(
-        'POST',
-        options.endpoint,
-        options.access_key,
-        options.data_type,
-        options.signature_version,
-        timestamp
-    );
-    const signature = sign(stringToSign, options.access_secret);
+  pattern: 'find',
+  fromMe: isPrivate,
+  desc: 'Identify song from audio or video',
+  type: 'search',
+}, async (message) => {
+  try {
+    if (!message.quoted || (!message.reply_message.audio && !message.reply_message.video))
+      return await message.reply('🎧 *Reply to an audio or video message, boss!*');
+
+    const path = await message.reply_message.downloadAndSave();
+    const sample = await audioCut(path, 0, 15);
+    const timestamp = Math.floor(Date.now() / 1000);
+    const stringToSign = buildSignature('POST', ACR.endpoint, ACR.key, 'audio', '1', timestamp);
+    const signature = signString(stringToSign, ACR.secret);
+
     const form = new FormData();
-    form.append('sample', data);
-    form.append('sample_bytes', data.length);
-    form.append('access_key', options.access_key);
-    form.append('data_type', options.data_type);
-    form.append('signature_version', options.signature_version);
+    form.append('sample', sample);
+    form.append('sample_bytes', sample.length);
+    form.append('access_key', ACR.key);
+    form.append('data_type', 'audio');
+    form.append('signature_version', '1');
     form.append('signature', signature);
     form.append('timestamp', timestamp);
 
-    const res = await axios.post('http://' + options.host + options.endpoint, form, {
-        headers: form.getHeaders()
+    const res = await axios.post(`http://${ACR.host}${ACR.endpoint}`, form, {
+      headers: form.getHeaders()
     });
 
     const { status, metadata } = res.data;
-    if (status.msg !== 'Success') {
-        return await message.reply(status.msg);
-    }
-    
-    const { album, release_date, artists, title } = metadata.music[0];
-    const yt = await yts(title);
+    if (status.msg !== 'Success') return await message.reply(`❌ *${status.msg}*`);
 
-    const cap = `*_${yt[0].title}_*\n\n\n*Album :* ${album.name || ''}\n*Artists :* ${artists !== undefined ? artists.map((v) => v.name).join(', ') : ''}\n*Release Date :* ${release_date}\n\n\`\`\`1.⬢\`\`\` *audio*\n\`\`\`2.⬢\`\`\` *video*\n\n_*Send a number as a reply to download*_`;
-    await message.send({ url: yt[0].image }, { caption: cap }, "image");
+    const info = metadata.music[0];
+    const search = await yts(info.title);
+    const song = search[0];
+
+    const caption = `🎶 *${song.title}*\n\n` +
+                    `👤 *Artists:* ${info.artists.map(a => a.name).join(', ')}\n` +
+                    `💿 *Album:* ${info.album?.name || 'N/A'}\n📅 *Released:* ${info.release_date}\n\n` +
+                    `\`\`\`1.⬢\`\`\` *Audio*\n\`\`\`2.⬢\`\`\` *Video*\n` +
+                    `\n❤️ *Powered by 𝚴𝚯𝚻 𝐔𝚪 𝚴𝚰𝐋*`;
+
+    await message.send({ url: song.image }, { caption }, 'image');
+
+  } catch (err) {
+    console.error('Find.js Error:', err.message);
+    await message.reply('⚠️ *Could not identify the song. Try a clearer audio sample.*');
+  }
 });
